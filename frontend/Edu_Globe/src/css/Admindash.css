@@ -1,3 +1,4 @@
+/* Body and General Setup */
 body {
   margin: 0;
   font-family: 'Segoe UI', sans-serif;
@@ -9,7 +10,6 @@ body {
   gap: 1.5rem;
   padding: 2rem;
   flex-wrap: nowrap;
-  /* or wrap if you want it responsive */
   overflow-x: auto;
 }
 
@@ -100,6 +100,13 @@ body {
   margin-bottom: 1rem;
 }
 
+/* Scrollable Courses Box */
+.courses-box {
+  max-height: 500px;
+  overflow-y: auto;
+}
+
+/* General Item Style */
 .item {
   display: flex;
   justify-content: space-between;
@@ -120,6 +127,7 @@ button:hover {
   background-color: #4500b5;
 }
 
+/* Announcement Box */
 .announcement-input {
   display: flex;
   gap: 0.5rem;
@@ -155,4 +163,81 @@ button:hover {
 
 .announcement-box {
   flex: 1.5;
+}
+.courses-box {
+  max-height: 500px; /* or any height you prefer */
+  overflow-y: auto;
+}
+
+/* Optional — make the scrollbar look nicer */
+.courses-box::-webkit-scrollbar {
+  width: 8px;
+}
+
+.courses-box::-webkit-scrollbar-thumb {
+  background-color: #888;
+  border-radius: 4px;
+}
+
+.courses-box::-webkit-scrollbar-thumb:hover {
+  background-color: #555;
+}
+/* Keep using the .box.scrollable class you had */
+
+.scrollable {
+  overflow-y: auto;
+  max-height: 500px;
+}
+
+.scrollable h2 {
+  position: sticky;
+  top: -1;
+  background: #fff;
+  padding: 0.5rem;
+  z-index: 1;
+  border-bottom: 1px solid #ddd;
+}
+
+.scrollable::-webkit-scrollbar {
+  width: 8px;
+}
+
+.scrollable::-webkit-scrollbar-thumb {
+  background-color: #888;
+  border-radius: 4px;
+}
+
+.scrollable::-webkit-scrollbar-thumb:hover {
+  background-color: #555;
+}
+
+.box.scrollable {
+  overflow-y: auto;
+  max-height: 400px;
+  padding-right: 8px;
+  position: relative;
+}
+
+.box.scrollable h2 {
+  position: sticky;
+  top: -1;
+  background-color: #fff;
+  padding: 10px;
+  z-index: 1;
+  border-bottom: 1px solid #ddd;
+}
+
+/* Optional: for custom scrollbar */
+.box.scrollable::-webkit-scrollbar {
+  width: 6px;
+}
+
+.box.scrollable::-webkit-scrollbar-thumb {
+  background-color: #ccc;
+  border-radius: 4px;
+}
+
+.box.scrollable::-webkit-scrollbar-track {
+  background-color: transparent;
+
 }

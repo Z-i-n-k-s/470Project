@@ -1,102 +1,116 @@
-import React, { useState } from 'react';
-import '../css/Admindash.css'; // Import the updated CSS file
+import React, { useState, useEffect } from 'react';
+import '../css/Admindash.css';
+import { Link } from "react-router-dom";
 
-const AdminDash = () => {
-  const [courses, setCourses] = useState([]);
-  const [announcement, setAnnouncement] = useState('');
-  const [advertisementImage, setAdvertisementImage] = useState(null);
+function Admin() {
+    const [sidebarOpen, setSidebarOpen] = useState(false);
+    const [courses, setCourses] = useState([]);
+    const [students, setStudents] = useState(["John Doe", "Jane Smith", "Mike Johnson"]);
+    const [teachers, setTeachers] = useState(["Prof. Alan", "Dr. Emily", "Mr. Brown"]);
+    const [announcements, setAnnouncements] = useState([
+        "📢 New course on AI starting next week!",
+        "📢 Midterm exams scheduled for May 10"
+    ]);
+    const [newAnnouncement, setNewAnnouncement] = useState("");
 
-  const totalCourses = courses.length;
-  const totalTeachers = 25; // Static for demonstration
-  const totalStudents = 300; // Static for demonstration
+    useEffect(() => {
+        fetch('http://localhost:5000/courses')
+            .then(response => response.json())
+            .then(data => setCourses(data))
+            .catch(error => console.error("Error fetching courses:", error));
+    }, []);
 
-  const handleAddCourse = () => {
-    // Logic to add a new course
-  };
+    const publishAnnouncement = () => {
+        if (newAnnouncement.trim() !== "") {
+            setAnnouncements([newAnnouncement, ...announcements]);
+            setNewAnnouncement("");
+        }
+    };
 
-  const handleDeleteCourse = (courseId) => {
-    // Logic to delete a course
-  };
-
-  const handleEditCourse = (courseId) => {
-    // Logic to edit a course
-  };
-
-  const handleAddAnnouncement = () => {
-    // Logic to make announcement
-  };
-
-  const handleAddAdvertisement = (e) => {
-    const file = e.target.files[0];
-    setAdvertisementImage(URL.createObjectURL(file));
-  };
-
-  return (
-    <div className="admin-dashboard-container">
-      {/* Sidebar */}
-      <div className="admin-sidebar">
-        <h2>Admin Panel</h2>
-        <nav>
-          <a href="#overview">Overview</a>
-          <a href="#courses">Manage Courses</a>
-          <a href="#announcements">Announcements</a>
-          <a href="#advertisements">Advertisements</a>
-        </nav>
-      </div>
-
-      {/* Main Content */}
-      <div className="dashboard-content">
-        <section id="overview" className="overview-section">
-          <div className="overview-card">
-            <h3>Total Courses</h3>
-            <p>{totalCourses}</p>
-          </div>
-          <div className="overview-card">
-            <h3>Total Teachers</h3>
-            <p>{totalTeachers}</p>
-          </div>
-          <div className="overview-card">
-            <h3>Total Students</h3>
-            <p>{totalStudents}</p>
-          </div>
-        </section>
-
-        <section id="courses" className="course-management">
-          <h3>Course Management</h3>
-          <button onClick={handleAddCourse} className="btn">Add Course</button>
-          <div className="course-list">
-            {courses.map((course) => (
-              <div key={course.id} className="course-card">
-                <p>{course.name}</p>
-                <button onClick={() => handleEditCourse(course.id)} className="btn">Edit</button>
-                <button onClick={() => handleDeleteCourse(course.id)} className="btn">Delete</button>
-              </div>
-            ))}
-          </div>
-        </section>
-
-        <section id="announcements" className="announcements">
-          <h3>Make Announcement</h3>
-          <textarea
-            value={announcement}
-            onChange={(e) => setAnnouncement(e.target.value)}
-            placeholder="Type your announcement here..."
-          ></textarea>
-          <button onClick={handleAddAnnouncement} className="btn">Post Announcement</button>
-        </section>
-
-        <section id="advertisements" className="advertisement">
-          <h3>Add Advertisement</h3>
-          <input type="file" onChange={handleAddAdvertisement} />
-          {advertisementImage && (
-            <div className="advertisement-preview">
-              <img src={advertisementImage} alt="Advertisement" />
+    return (
+        <div className="admin-page">
+            {/* Top Navbar */}
+            <div className="top-navbar">
+                <button className="menu-btn" onClick={() => setSidebarOpen(true)}>☰</button>
+                <h1>Admin Dashboard</h1>
             </div>
-          )}
-        </section>
-      </div>
-    </div>
-  );
-};
 
-export default AdminDash;
+            {/* Sidebar */}
+            <div className={`sidebar ${sidebarOpen ? 'open' : ''}`}>
+                <button className="close-btn" onClick={() => setSidebarOpen(false)}>×</button>
+                <ul>
+                    <li>Dashboard</li>
+                    <li>Courses</li>
+                    <li>Students</li>
+                    <li>Teachers</li>
+                    <li>Announcements</li>
+                </ul>
+            </div>
+
+            {/* Main Content */}
+            <div className="main-container">
+
+                {/* Courses */}
+                <div className="box scrollable">
+                    <h2>Courses</h2>
+                    {courses.map((course, index) => (
+                        <div className="item" key={index}>
+                            <span>{course.Course_Name}</span>
+                            <Link to={`/course/${encodeURIComponent(course.Course_Name)}`}>
+                                <button>Details</button>
+                            </Link>
+                        </div>
+                    ))}
+                </div>
+
+                {/* Students */}
+                <div className="box scrollable">
+                    <h2>Students</h2>
+                    {students.map((student, index) => (
+                        <div className="item" key={index}>
+                            <span>{student}</span>
+                            <button>See More</button>
+                        </div>
+                    ))}
+                </div>
+
+                {/* Teachers */}
+                <div className="box scrollable">
+                    <h2>Teachers</h2>
+                    {teachers.map((teacher, index) => (
+                        <div className="item" key={index}>
+                            <span>{teacher}</span>
+                            <button>See More</button>
+                        </div>
+                    ))}
+                </div>
+
+                {/* Announcements */}
+                <div className="box announcement-box">
+                    <h2>Announcements</h2>
+
+                    <div className="announcement-input">
+                        <input
+                            type="text"
+                            value={newAnnouncement}
+                            onChange={(e) => setNewAnnouncement(e.target.value)}
+                            placeholder="Write your announcement here..."
+                        />
+                        <button onClick={publishAnnouncement}>Publish</button>
+                    </div>
+
+                    <div className="announcement-list">
+                        {announcements.map((note, index) => (
+                            <div className="item" key={index}>
+                                <span>{note}</span>
+                            </div>
+                        ))}
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    );
+}
+
+export default Admin;
