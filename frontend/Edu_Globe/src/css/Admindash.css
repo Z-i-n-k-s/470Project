@@ -1,0 +1,158 @@
+body {
+  margin: 0;
+  font-family: 'Segoe UI', sans-serif;
+  background-color: #f4f4f9;
+}
+
+.main-container {
+  display: flex;
+  gap: 1.5rem;
+  padding: 2rem;
+  flex-wrap: nowrap;
+  /* or wrap if you want it responsive */
+  overflow-x: auto;
+}
+
+/* Top Navbar */
+.top-navbar {
+  position: sticky;
+  top: 0;
+  background-color: #6200ea;
+  color: white;
+  padding: 1rem 2rem;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  z-index: 10;
+}
+
+.top-navbar h1 {
+  margin: 0;
+  flex-grow: 1;
+}
+
+.menu-btn {
+  background: none;
+  border: none;
+  font-size: 1.5rem;
+  color: white;
+  cursor: pointer;
+}
+
+/* Sidebar */
+.sidebar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 250px;
+  background-color: #333;
+  color: white;
+  padding: 2rem 1rem;
+  opacity: 0;
+  z-index: -1;
+  transition: all 0.3s ease;
+}
+
+.sidebar.open {
+  opacity: 1;
+  z-index: 20;
+}
+
+.sidebar .close-btn {
+  background: none;
+  border: none;
+  font-size: 1.8rem;
+  color: white;
+  cursor: pointer;
+  margin-bottom: 1rem;
+}
+
+.sidebar ul {
+  list-style: none;
+  padding: 0;
+}
+
+.sidebar li {
+  margin: 1rem 0;
+  cursor: pointer;
+}
+
+/* Main Container */
+.main-container {
+  display: flex;
+  gap: 1.5rem;
+  padding: 2rem;
+  flex-wrap: nowrap;
+}
+
+.box {
+  background: white;
+  border-radius: 12px;
+  padding: 1rem;
+  flex: 1;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  overflow-y: auto;
+  max-height: 500px;
+}
+
+.box h2 {
+  margin-bottom: 1rem;
+}
+
+.item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin: 0.5rem 0;
+}
+
+button {
+  background-color: #6200ea;
+  color: white;
+  border: none;
+  padding: 0.4rem 0.8rem;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+button:hover {
+  background-color: #4500b5;
+}
+
+.announcement-input {
+  display: flex;
+  gap: 0.5rem;
+  margin-bottom: 1rem;
+}
+
+.announcement-input input {
+  flex: 1;
+  padding: 0.5rem 0.8rem;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+  font-size: 1rem;
+}
+
+.announcement-input button {
+  background-color: #6200ea;
+  color: white;
+  border: none;
+  padding: 0.5rem 1rem;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 1rem;
+}
+
+.announcement-input button:hover {
+  background-color: #4500b5;
+}
+
+.announcement-list {
+  overflow-y: auto;
+  max-height: 300px;
+}
+
+.announcement-box {
+  flex: 1.5;
+}

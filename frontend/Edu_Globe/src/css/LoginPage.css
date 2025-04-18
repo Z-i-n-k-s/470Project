@@ -1,0 +1,48 @@
+/* Full viewport container */
+.container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  background: white;
+}
+
+/* Centered box with content */
+.home-box {
+  background: #ffffff;
+  padding: 40px 60px;
+  border-radius: 20px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
+  text-align: center;
+}
+
+/* Heading */
+.home-box h1 {
+  font-size: 32px;
+  margin-bottom: 30px;
+  color: #333;
+}
+
+/* Button group container */
+.button-group {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+/* Buttons styling */
+.button-group button {
+  padding: 14px 30px;
+  font-size: 18px;
+  border: none;
+  border-radius: 10px;
+  background-color: #4A90E2;
+  color: white;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+/* Button hover effect */
+.button-group button:hover {
+  background-color: #357ABD;
+}

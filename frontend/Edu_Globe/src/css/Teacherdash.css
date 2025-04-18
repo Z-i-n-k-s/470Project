@@ -1,0 +1,109 @@
+.student-page {
+  font-family: sans-serif;
+  color: #333;
+}
+
+.top-navbar {
+  position: sticky;
+  top: 0;
+  background-color: #6200ea;
+  color: white;
+  padding: 1rem;
+  display: flex;
+  align-items: center;
+  z-index: 10;
+}
+
+.menu-btn {
+  background: none;
+  border: none;
+  color: white;
+  font-size: 1.5rem;
+  margin-right: 1rem;
+  cursor: pointer;
+}
+
+.sidebar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  background-color: #222;
+  color: white;
+  width: 250px;
+  height: 100%;
+  padding: 1rem;
+  opacity: 0;
+  z-index: -1;
+  transition: opacity 0.3s ease, z-index 0.3s ease;
+}
+
+.sidebar.open {
+  opacity: 1;
+  z-index: 15;
+}
+
+.close-btn {
+  background: none;
+  border: none;
+  color: white;
+  font-size: 2rem;
+  margin-bottom: 1rem;
+  cursor: pointer;
+}
+
+.sidebar ul {
+  list-style: none;
+  padding: 0;
+}
+
+.sidebar li {
+  margin: 1rem 0;
+  cursor: pointer;
+}
+
+.main-container {
+  padding: 2rem;
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+
+.row {
+  display: flex;
+  gap: 1.5rem;
+}
+
+.box {
+  background: #f9f9f9;
+  padding: 1rem;
+  flex: 1;
+  border-radius: 8px;
+  overflow: hidden;
+  min-height: 200px;
+}
+
+.item {
+  margin-bottom: 0.7rem;
+  font-size: 1rem;
+}
+
+.announcement-input {
+  width: 100%;
+  padding: 0.5rem;
+  margin-bottom: 0.7rem;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+.box button {
+  padding: 0.5rem 1rem;
+  background: #6200ea;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.box button:hover {
+  background: #4500b5;
+}

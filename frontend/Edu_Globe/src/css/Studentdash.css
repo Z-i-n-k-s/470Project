@@ -1,0 +1,167 @@
+.student-page {
+  font-family: sans-serif;
+  color: #333;
+}
+
+.top-navbar {
+  position: sticky;
+  top: 0;
+  background-color: #6200ea;
+  color: white;
+  padding: 1rem;
+  display: flex;
+  align-items: center;
+  z-index: 10;
+}
+.top-navbar h1 {
+  color: white;
+}
+.menu-btn {
+  background: none;
+  border: none;
+  color: white;
+  font-size: 1.5rem;
+  margin-right: 1rem;
+  cursor: pointer;
+}
+
+.sidebar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  background-color: #222;
+  color: white;
+  width: 250px;
+  height: 100%;
+  padding: 1rem;
+  opacity: 0;
+  z-index: -1;
+  transition: opacity 0.3s ease, z-index 0.3s ease;
+}
+
+.sidebar.open {
+  opacity: 1;
+  z-index: 15;
+}
+
+.close-btn {
+  background: none;
+  border: none;
+  color: white;
+  font-size: 2rem;
+  margin-bottom: 1rem;
+  cursor: pointer;
+}
+
+.sidebar ul {
+  list-style: none;
+  padding: 0;
+}
+
+.sidebar li {
+  margin: 1rem 0;
+  cursor: pointer;
+}
+
+.main-container {
+  padding: 2rem;
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+
+.row {
+  display: flex;
+  gap: 1.5rem;
+}
+
+.box {
+  background: #f9f9f9;
+  padding: 1rem;
+  flex: 1;
+  border-radius: 8px;
+  overflow: hidden;
+  min-height: 200px;
+}
+
+.box.scrollable {
+  overflow-y: auto;
+  max-height: 400px;
+  /* Adjust as needed */
+  padding-right: 8px;
+  position: relative;
+  /* Necessary for sticky positioning */
+}
+
+.box.scrollable h2 {
+  position: sticky;
+  top: -1;
+  background-color: #fff;
+  /* Add a background color to avoid overlap with content */
+  padding: 10px;
+  z-index: 1;
+  /* Make sure it's above other content */
+  border-bottom: 1px solid #ddd;
+  /* Optional: to separate the header from the list */
+}
+
+/* Optional: for custom scrollbar */
+.box.scrollable::-webkit-scrollbar {
+  width: 6px;
+}
+
+.box.scrollable::-webkit-scrollbar-thumb {
+  background-color: #ccc;
+  border-radius: 4px;
+}
+
+.box.scrollable::-webkit-scrollbar-track {
+  background-color: transparent;
+}
+
+
+.item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 0.8rem;
+}
+
+.item button {
+  padding: 0.4rem 0.8rem;
+  font-size: 1rem;
+  border-radius: 4px;
+  cursor: pointer;
+  border: none;
+  transition: background-color 0.3s ease;
+}
+
+.item button:first-child {
+  margin-right: 0.5rem; /* Add a margin to the right of the first button */
+}
+
+.item button:hover {
+  background-color: #0056b3; /* Change background on hover */
+}
+
+.item button:focus {
+  outline: none;
+}
+
+.add-btn {
+  background-color: #28a745; /* Green for ADD */
+  color: white;
+}
+
+.details-btn {
+  background-color: #007bff; /* Blue for Details */
+  color: white;
+}
+
+.add-btn:hover {
+  background-color: #218838; /* Darker green on hover */
+}
+
+.details-btn:hover {
+  background-color: #0056b3; /* Darker blue on hover */
+}

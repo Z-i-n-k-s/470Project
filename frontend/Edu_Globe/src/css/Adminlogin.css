@@ -1,0 +1,89 @@
+/* StudentLogIn.css */
+
+* {
+  box-sizing: border-box; /* ✅ important to fix input overflow issue */
+}
+
+body {
+  margin: 0;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background-color: #f3f4f6;
+}
+
+.login-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  background-color: #f3f4f6;
+}
+
+.login-box {
+  background-color: #ffffff;
+  padding: 30px;
+  border-radius: 16px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+  width: 380px;
+}
+
+.login-title {
+  font-size: 24px;
+  font-weight: bold;
+  text-align: center;
+  margin-bottom: 24px;
+  color: #333;
+}
+
+.input-group {
+  margin-bottom: 18px;
+}
+
+.input-group label {
+  display: block;
+  margin-bottom: 6px;
+  color: #333;
+  font-weight: 500;
+}
+
+.input-group input {
+  width: 100%;
+  padding: 10px;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+  font-size: 15px;
+  outline: none;
+  transition: border-color 0.3s ease;
+}
+
+.input-group input:focus {
+  border-color: #3b82f6;
+}
+
+.login-btn, .register-btn {
+  width: 100%;
+  padding: 12px;
+  border-radius: 8px;
+  font-size: 17px;
+  cursor: pointer;
+  border: none;
+  margin-top: 10px;
+  transition: background-color 0.3s ease;
+}
+
+.login-btn {
+  background-color: #3b82f6;
+  color: #fff;
+}
+
+.login-btn:hover {
+  background-color: #2563eb;
+}
+
+.register-btn {
+  background-color: #e2e8f0;
+  color: #333;
+}
+
+.register-btn:hover {
+  background-color: #cbd5e1;
+}
