@@ -193,6 +193,74 @@ app.get('/course/:courseName', async (req, res) => {
   }
 });
 
+
+const mongoose = require('mongoose');
+
+const UniversitySchema = new mongoose.Schema({
+  name: { type: String, required: true },
+  country: { type: String, required: true },
+  details: { type: String, required: true },
+  requirements: { type: String, required: true },
+  website: { type: String, required: true },
+  deadline: { type: Date, required: true },
+}, { collection: 'Unilist' });
+
+module.exports = mongoose.model('University', UniversitySchema);
+
+
+ // 1. Get all universities
+app.get('/universities', async (req, res) => {
+    try {
+      const universities = await University.find();
+      res.json(universities);
+    } catch (err) {
+      res.status(500).json({ message: err.message });
+    }
+  });
+  
+  // 2. Search universities by country (new endpoint)
+  app.get('/universities/search/:country', async (req, res) => {
+    try {
+      const countryName = req.params.country;
+      const universities = await University.find({ country: { $regex: new RegExp(countryName, 'i') } });
+      res.json(universities);
+    } catch (err) {
+      res.status(500).json({ message: err.message });
+    }
+  });
+  
+  // 3. Create a new university
+  app.post('/universities', async (req, res) => {
+    const { name, country, details, requirements, website, deadline } = req.body;
+    const university = new University({ name, country, details, requirements, website, deadline });
+  
+    try {
+      const newUniversity = await university.save();
+      res.status(201).json(newUniversity);
+    } catch (err) {
+      res.status(400).json({ message: err.message });
+    }
+  });
+  
+  // 4. Update a university
+  app.put('/universities/:id', async (req, res) => {
+    try {
+      const updatedUniversity = await University.findByIdAndUpdate(req.params.id, req.body, { new: true });
+      res.json(updatedUniversity);
+    } catch (err) {
+      res.status(400).json({ message: err.message });
+    }
+  });
+  
+  // 5. Delete a university
+  app.delete('/universities/:id', async (req, res) => {
+    try {
+      const deletedUniversity = await University.findByIdAndDelete(req.params.id);
+      res.json({ message: 'University deleted', deletedUniversity });
+    } catch (err) {
+      res.status(400).json({ message: err.message });
+    }
+  });
 // Start Server
 app.listen(PORT, () => {
     console.log(`Server running on http://localhost:${PORT}`);

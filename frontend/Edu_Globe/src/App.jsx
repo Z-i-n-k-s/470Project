@@ -10,6 +10,7 @@ import Teacherdash from './dashboard/Teacherdash';
 import Studentreg from './register/Studentreg';
 import Teacherreg from './register/Teacherreg';
 import Courses from './courses/Courses';
+import Unilist from './Unilist/Unilist';
 function App  (){
   const [userRole, setUserRole] = useState('');
 
@@ -24,7 +25,8 @@ function App  (){
     {path:'/studentdash',element:<><Studentdash/></>},
     {path:'/studentreg',element:<><Studentreg/></>},
     {path:"/course/:courseName", element: <Courses />},
-    {path:'/teacherreg',element:<><Teacherreg/></>}
+    {path:"/course/:courseName", element: <Courses />},
+    {path:'/unilist',element:<><Unilist/></>}
   ]);
 
   return (<><RouterProvider router={router} /></>) ;

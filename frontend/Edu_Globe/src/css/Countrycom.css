@@ -1,0 +1,62 @@
+.comparison-container {
+    padding: 2rem;
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f4;
+    min-height: 100vh;
+  }
+  
+  .comparison-title {
+    text-align: center;
+    margin-bottom: 2rem;
+    font-size: 2rem;
+    color: #333;
+  }
+  
+  .country-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 2rem;
+  }
+  
+  .country-card {
+    background-color: #fff;
+    border-radius: 12px;
+    padding: 1.5rem;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    transition: transform 0.2s ease;
+  }
+  
+  .country-card:hover {
+    transform: translateY(-5px);
+  }
+  
+  .country-name {
+    margin-bottom: 1rem;
+    font-size: 1.5rem;
+    color: #2c3e50;
+  }
+  
+  .cost-breakdown p {
+    margin: 0.3rem 0;
+  }
+  
+  .total-cost {
+    margin-top: 0.8rem;
+    font-weight: bold;
+    color: #1abc9c;
+  }
+  
+  .facility-section {
+    margin-top: 1rem;
+  }
+  
+  .facility-section ul {
+    list-style: none;
+    padding: 0;
+    margin: 0.5rem 0 0 0;
+  }
+  
+  .facility-section li {
+    padding: 0.3rem 0;
+    font-size: 0.95rem;
+  }
