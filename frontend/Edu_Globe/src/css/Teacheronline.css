@@ -1,0 +1,94 @@
+/* Teacheronline.css */
+.live-class-form {
+    padding: 20px;
+    font-family: Arial, sans-serif;
+    max-width: 500px;
+    margin: 0 auto;
+    background-color: #f9f9f9;
+    border-radius: 10px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  }
+  
+  /* Input styling */
+  .input-box {
+    padding: 10px;
+    width: 100%;
+    margin-bottom: 10px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    font-size: 16px;
+    transition: border-color 0.3s;
+  }
+  
+  .input-box:focus {
+    border-color: #2196f3;
+  }
+  
+  /* Button styling */
+  .buttons {
+    display: flex;
+    justify-content: space-between;
+    gap: 10px;
+  }
+  
+  .button {
+    padding: 10px 20px;
+    border-radius: 5px;
+    border: none;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+  }
+  
+  .paste-button {
+    background-color: #4caf50;
+    color: white;
+  }
+  
+  .paste-button:disabled {
+    background-color: #bdbdbd;
+  }
+  
+  .paste-button:hover {
+    background-color: #45a049;
+  }
+  
+  .post-button {
+    background-color: #2196f3;
+    color: white;
+  }
+  
+  .post-button:disabled {
+    background-color: #bdbdbd;
+  }
+  
+  .post-button:hover {
+    background-color: #1e88e5;
+  }
+  
+  /* Preview styling */
+  .live-class-preview {
+    margin-top: 20px;
+    padding: 10px;
+    background-color: #f1f1f1;
+    border-radius: 5px;
+  }
+  
+  .live-class-preview h3 {
+    font-size: 18px;
+  }
+  
+  .live-class-preview p {
+    font-size: 16px;
+    color: #333;
+  }
+  
+  .live-class-preview a {
+    color: #2196f3;
+    text-decoration: none;
+  }
+  
+  .live-class-preview a:hover {
+    text-decoration: underline;
+  }
+  

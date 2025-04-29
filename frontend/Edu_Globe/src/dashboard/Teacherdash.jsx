@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import {Link} from 'react-router-dom';
 import '../CSS/Teacherdash.css';
 
 function TeacherDashboard() {
@@ -30,7 +31,8 @@ function TeacherDashboard() {
             <div className={`sidebar ${sidebarOpen ? 'open' : ''}`}>
                 <button className="close-btn" onClick={() => setSidebarOpen(false)}>×</button>
                 <ul>
-                    <li>Dashboard</li>
+                   <Link to = '/teacheronline'>Live Class  </Link> 
+                   <li><Link to = '/teacherprofileedit'>Edit Profile  </Link> </li>
                     <li>Your Courses</li>
                     <li>Activities</li>
                     <li>Announcements</li>

@@ -11,6 +11,12 @@ import Studentreg from './register/Studentreg';
 import Teacherreg from './register/Teacherreg';
 import Courses from './courses/Courses';
 import Unilist from './Unilist/Unilist';
+import Countrycom from './Unilist/Countrycom';
+import Recordclass from './recordedclass/recordclass';
+import Teacheronline from './onlineclass/Teacheronline';
+import Studentonline from './onlineclass/Studentonline';
+import StudentProfileEdit from './ProfileEdit/StudentProfileEdit';
+import TeacherProfileEdit from './ProfileEdit/TeacherProfileEdit';
 function App  (){
   const [userRole, setUserRole] = useState('');
 
@@ -26,7 +32,13 @@ function App  (){
     {path:'/studentreg',element:<><Studentreg/></>},
     {path:"/course/:courseName", element: <Courses />},
     {path:"/course/:courseName", element: <Courses />},
-    {path:'/unilist',element:<><Unilist/></>}
+    {path:"/countrycom", element: <Countrycom />},
+    {path:"/recordedclass", element: <Recordclass />},
+    {path:"/teacheronline", element: <Teacheronline />},
+    {path:"/studentonline", element: <Studentonline />},
+    {path:'/unilist',element:<><Unilist/></>},
+    {path:'/teacherprofileedit',element:<><TeacherProfileEdit/></>},
+    {path:'/studentprofileedit',element:<><StudentProfileEdit /></>}
   ]);
 
   return (<><RouterProvider router={router} /></>) ;

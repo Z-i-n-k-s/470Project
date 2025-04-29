@@ -6,6 +6,7 @@ const UniversityList = () => {
   const [openIndex, setOpenIndex] = useState(null);
   const [searchTerm, setSearchTerm] = useState('');
   const [error, setError] = useState(null);
+  const [isDarkMode, setIsDarkMode] = useState(false); // State for dark mode toggle
 
   // Fetch universities from backend by country
   const handleSearch = () => {
@@ -14,7 +15,7 @@ const UniversityList = () => {
       return;
     }
 
-    fetch(`http://localhost:5000/universities/${searchTerm}`)
+    fetch(`http://localhost:5000/universities/search/${encodeURIComponent(searchTerm)}`)
       .then(res => res.json())
       .then(data => {
         setUniversities(data);
@@ -45,9 +46,13 @@ const UniversityList = () => {
     };
   };
 
+  const toggleDarkMode = () => {
+    setIsDarkMode(prevMode => !prevMode);
+  };
+
   return (
-    <div className="uni-wrapper">
-      <h1 className="uni-title">📅 University Deadline Tracker</h1>
+    <div className={`uni-wrapper ${isDarkMode ? 'dark' : 'light'}`}>
+      <h1 className="uni-title color : #ffffff">📅 Find our Desired University</h1>
 
       {error && <p className="error-message">{error}</p>}
 
@@ -61,6 +66,11 @@ const UniversityList = () => {
         />
         <button onClick={handleSearch} className="search-btn">Search</button>
       </div>
+
+      {/* Dark Mode Toggle Button with Sun/Moon icon */}
+      <button onClick={toggleDarkMode} className="dark-mode-toggle">
+        {isDarkMode ? '🌙' : '☀️'} {/* Moon icon for dark mode, Sun icon for light mode */}
+      </button>
 
       {universities.length > 0 ? (
         universities.map((uni, index) => {

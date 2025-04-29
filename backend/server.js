@@ -46,28 +46,76 @@ app.post('/register', async (req, res) => {
         res.status(500).json({ message: "Registration failed." });
     }
 });
+// Modify this part of the code to use Student instead of StudentProfile
+
+
 
 // Example of Express.js backend route
 // API Route: Login
 app.post('/login', async (req, res) => {
   const { email, password } = req.body;
 
-  // Corrected: Searching for a student, not a User
   const student = await Student.findOne({ email });
   
   if (!student) {
-    return res.status(400).json({ message: "User not found" });
+      return res.status(400).json({ message: "User not found" });
   }
 
   // Check if the password matches
-  const isPasswordCorrect = password === student.password; // In production, use hashing libraries like bcrypt
+  const isPasswordCorrect = password === student.password; // In production, use bcrypt for hashing passwords
   
   if (isPasswordCorrect) {
-    return res.status(200).json({ message: "Login successful" });
+      // Save customerId to localStorage after successful login
+      localStorage.setItem("customerId", student.studentId);  // Assuming studentId is unique
+      return res.status(200).json({ message: "Login successful" });
   } else {
-    return res.status(400).json({ message: "Invalid credentials" });
+      return res.status(400).json({ message: "Invalid credentials" });
   }
 });
+
+// API Route: Update Student Profile
+app.put('/updateProfile', async (req, res) => {
+  const {  firstName, lastName, email, institution, department, password, studentId } = req.body;
+
+  try {
+      // Find the student by studentId and update their information
+      const updatedStudent = await Student.findOneAndUpdate(
+          { studentId }, // Find student by studentId
+          { firstName, lastName, email, institution, department, password, studentId }, // Update data
+          { new: true } // Return the updated document
+      );
+
+      if (!updatedStudent) {
+          return res.status(404).json({ message: "Student not found" });
+      }
+
+      res.status(200).json({ message: "Profile updated successfully", student: updatedStudent });
+  } catch (error) {
+      console.error("Error updating profile:", error);
+      res.status(500).json({ message: "Profile update failed" });
+  }
+});
+// API Route: Get Student Profile by StudentId
+app.get('/api/student/:studentId', async (req, res) => {
+  const { studentId } = req.params;
+
+  try {
+      // Find the student by studentId
+      const student = await Student.findOne({ studentId });
+
+      if (!student) {
+          return res.status(404).json({ message: "Student not found" });
+      }
+
+      // Return the student profile information
+      res.status(200).json(student);
+  } catch (error) {
+      console.error("Error fetching student data:", error);
+      res.status(500).json({ message: "Error fetching data" });
+  }
+});
+
+
 
 
 
@@ -130,7 +178,27 @@ app.post('/tlogin', async (req, res) => {
     return res.status(400).json({ message: "Invalid credentials" });
   }
 });
+// Update teacher profile
+app.put('/teacher/:email', async (req, res) => {
+  const { email } = req.params;  // Extract email from URL
+  const { firstName, lastName, institution, degree, password } = req.body;
 
+  try {
+      const updatedTeacher = await Teacher.findOneAndUpdate(
+          { email },  // Find the teacher by email
+          { firstName, lastName, institution, degree, password },  // Update teacher data
+          { new: true } // Return the updated document
+      );
+
+      if (!updatedTeacher) {
+          return res.status(404).json({ message: 'Teacher not found' });
+      }
+      res.status(200).json(updatedTeacher);  // Return the updated teacher's data
+  } catch (error) {
+      console.error('Error updating teacher:', error);
+      res.status(500).json({ message: 'Failed to update teacher profile.' });
+  }
+});
 
 
 // Course Schema
@@ -194,7 +262,7 @@ app.get('/course/:courseName', async (req, res) => {
 });
 
 
-const mongoose = require('mongoose');
+
 
 const UniversitySchema = new mongoose.Schema({
   name: { type: String, required: true },
@@ -205,7 +273,7 @@ const UniversitySchema = new mongoose.Schema({
   deadline: { type: Date, required: true },
 }, { collection: 'Unilist' });
 
-module.exports = mongoose.model('University', UniversitySchema);
+const University = mongoose.model('University', UniversitySchema);
 
 
  // 1. Get all universities
@@ -261,6 +329,124 @@ app.get('/universities', async (req, res) => {
       res.status(400).json({ message: err.message });
     }
   });
+
+  
+
+  const CountrySchema = new mongoose.Schema({
+    name: { type: String, required: true },
+    currency: { type: String, required: true },
+    costs: {
+      accommodation: { type: String, required: true },
+      food: { type: String, required: true },
+      transport: { type: String, required: true },
+      total: { type: String, required: true },
+    },
+    facilities: [
+      {
+        name: { type: String, required: true },
+        rating: { type: Number, required: true },
+      },
+    ],
+  }, { collection: 'Countries' });
+  
+  
+const Country = mongoose.model('Country', CountrySchema);
+// 1. Get all countries
+app.get('/countries', async (req, res) => {
+  try {
+    const countries = await Country.find();
+    console.log("Fetched countries:", countries); // Log the fetched data to check the format
+    res.json(countries); // Return the array of countries
+  } catch (err) {
+    console.error("Error fetching countries:", err);
+    res.status(500).json({ message: "Failed to load countries" });
+  }
+});
+
+
+// 2. Create a new country
+app.post('/countries', async (req, res) => {
+  const { name, currency, costs, facilities } = req.body;
+  const country = new Country({
+    name,
+    currency,
+    costs,
+    facilities,
+  });
+
+  try {
+    const newCountry = await country.save();
+    res.status(201).json(newCountry);
+  } catch (err) {
+    res.status(400).json({ message: err.message });
+  }
+});
+
+// 3. Update country by ID
+app.put('/countries/:id', async (req, res) => {
+  try {
+    const updatedCountry = await Country.findByIdAndUpdate(req.params.id, req.body, { new: true });
+    res.json(updatedCountry);
+  } catch (err) {
+    res.status(400).json({ message: err.message });
+  }
+});
+
+// 4. Delete country by ID
+app.delete('/countries/:id', async (req, res) => {
+  try {
+    const deletedCountry = await Country.findByIdAndDelete(req.params.id);
+    res.json({ message: 'Country deleted', deletedCountry });
+  } catch (err) {
+    res.status(400).json({ message: err.message });
+  }
+});
+
+
+const liveClassSchema = new mongoose.Schema({
+  liveClassName: { type: String, required: true },  // Store the description or link
+  instructorName: { type: String, required: true },  // Store the instructor's name
+  courseName: { type: String, required: true },      // Store the course name
+  classTime: { type: String, required: true },       // Store the class time
+}, { collection: 'Liveclass' });
+
+const LiveClass = mongoose.model('LiveClass', liveClassSchema);
+
+// POST endpoint to save live class to database
+app.post('/api/liveclass', async (req, res) => {
+  const { liveClassName, instructorName, courseName, classTime } = req.body;
+
+  if (!liveClassName || !instructorName || !courseName || !classTime) {
+    return res.status(400).send('All fields are required');
+  }
+
+  try {
+    const newLiveClass = new LiveClass({
+      liveClassName,
+      instructorName,
+      courseName,
+      classTime,
+    });
+    await newLiveClass.save();
+    res.status(200).send('Live class saved successfully!');
+  } catch (err) {
+    console.error(err);
+    res.status(500).send('Failed to save live class');
+  }
+});
+
+
+app.get('/api/liveclass', async (req, res) => {
+  try {
+    const liveClasses = await LiveClass.find();
+    res.json(liveClasses);
+  } catch (error) {
+    console.error('Error fetching live classes:', error);
+    res.status(500).json({ message: 'Error fetching live classes' });
+  }
+});
+
+
 // Start Server
 app.listen(PORT, () => {
     console.log(`Server running on http://localhost:${PORT}`);
