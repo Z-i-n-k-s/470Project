@@ -20,6 +20,8 @@ const Login = () => {
                 });
 
                 const data = await response.json();
+                localStorage.setItem("userData", JSON.stringify(data.data));
+                console.log(data)
 
                 if (response.ok) {
                     // If the login is successful, redirect to Student Dashboard
@@ -62,7 +64,10 @@ const Login = () => {
                     />
                 </div>
 
-                <button onClick={handleLogin} className="login-btn">
+                <button onClick={
+                    
+                    handleLogin
+                    } className="login-btn">
                     Log In
                 </button>
 

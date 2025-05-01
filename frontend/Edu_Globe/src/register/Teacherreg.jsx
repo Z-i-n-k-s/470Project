@@ -1,7 +1,9 @@
 import React, { useState } from 'react';
 import '../CSS/Teacherreg.css';
+import { useNavigate } from 'react-router-dom';
 
 function RegisterPage() {
+    const navigate = useNavigate();
     const [formData, setFormData] = useState({
         firstName: '',
         lastName: '',
@@ -38,6 +40,7 @@ function RegisterPage() {
                     degree: 'BSC',
                     password: ''
                 });
+                navigate('/teacherlog')
             } else {
                 alert(result.message);
             }

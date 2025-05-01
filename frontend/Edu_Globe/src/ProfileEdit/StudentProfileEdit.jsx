@@ -1,127 +1,108 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import '../css/StudentProfileEdit.css';
+import { useNavigate } from "react-router-dom";
+
 const ProfileUpdatePage = () => {
-    const [formData, setFormData] = useState({
-        firstName: "",
-        lastName: "",
-        email: "",
-        institution: "",
-        department: "",
-        password: "",
-        studentId: ""
+  const navigate = useNavigate();
+
+  // include _id and __v in our state so we send everything back
+  const [formData, setFormData] = useState({
+    _id: "",
+    __v: 0,
+    firstName: "",
+    lastName: "",
+    email: "",
+    institution: "",
+    department: "",
+    password: "",
+    studentId: ""
+  });
+  const [message, setMessage] = useState("");
+
+  useEffect(() => {
+    const stored = localStorage.getItem("userData");
+    if (!stored) return;
+
+    const userData = JSON.parse(stored);
+    setFormData({
+      _id:         userData._id         || "",
+      __v:         userData.__v         || 0,
+      firstName:   userData.firstName   || "",
+      lastName:    userData.lastName    || "",
+      email:       userData.email       || "",
+      institution: userData.institution || "",
+      department:  userData.department  || "",
+      password:    userData.password    || "",
+      studentId:   userData.studentId   || ""
     });
+  }, []);
 
-    const [message, setMessage] = useState("");
-    const studentId = localStorage.getItem("customerId"); // Assuming studentId is stored in localStorage
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setFormData((prev) => ({
+      ...prev,
+      [name]: value
+    }));
+  };
 
-    useEffect(() => {
-        // Fetch the current student's data using the studentId
-        if (studentId) {
-            axios.get(`http://localhost:5000/api/student/${studentId}`)
-                .then((response) => {
-                    setFormData(response.data);
-                })
-                .catch((error) => {
-                    console.error("Error fetching student data:", error);
-                    setMessage("Error fetching data");
-                });
-        }
-    }, [studentId]);
+  const handleSubmit = async (e) => {
+    e.preventDefault();
 
-    const handleChange = (e) => {
-        const { name, value } = e.target;
-        setFormData((prevState) => ({
-            ...prevState,
-            [name]: value
-        }));
-    };
+    try {
+      // send all of formData—including _id and __v
+      const response = await axios.put(
+        'http://localhost:5000/updateProfile',
+        formData
+      );
+      setMessage(response.data.message);
 
-    const handleSubmit = (e) => {
-        e.preventDefault();
+      if (response.data.student) {
+        // backend is returning the updated student in `student`
+        const updated = response.data.student;
+        localStorage.setItem("userData", JSON.stringify(updated));
+        // redirect
+        navigate("/studentdash");
+      }
+    } catch (error) {
+      console.error("Error updating profile:", error);
+      setMessage("Profile update failed");
+    }
+  };
 
-        axios.put('http://localhost:5000/updateProfile', { studentId, ...formData })
-            .then((response) => {
-                setMessage(response.data.message);
-            })
-            .catch((error) => {
-                console.error("Error updating profile:", error);
-                setMessage("Profile update failed");
-            });
-    };
+  return (
+    <div className="profile-update">
+      <h2>Update Your Profile</h2>
+      {message && <p className="message">{message}</p>}
+      <form onSubmit={handleSubmit}>
+        {[
+          { label: "First Name", name: "firstName", type: "text" },
+          { label: "Last Name",  name: "lastName",  type: "text" },
+          { label: "Email",      name: "email",     type: "email" },
+          { label: "Institution",name: "institution",type: "text" },
+          { label: "Department", name: "department", type: "text" },
+          { label: "Password",   name: "password",   type: "password" },
+          { label: "Student ID", name: "studentId",  type: "text" }
+        ].map(({ label, name, type }) => (
+          <div key={name}>
+            <label>{label}:</label>
+            <input
+              type={type}
+              name={name}
+              value={formData[name]}
+              onChange={handleChange}
+            />
+          </div>
+        ))}
 
-    return (
-        <div className="profile-update">
-            <h2>Update Your Profile</h2>
-            {message && <p>{message}</p>}
-            <form onSubmit={handleSubmit}>
-                <div>
-                    <label>First Name:</label>
-                    <input
-                        type="text"
-                        name="firstName"
-                        value={formData.firstName}
-                        onChange={handleChange}
-                    />
-                </div>
-                <div>
-                    <label>Last Name:</label>
-                    <input
-                        type="text"
-                        name="lastName"
-                        value={formData.lastName}
-                        onChange={handleChange}
-                    />
-                </div>
-                <div>
-                    <label>Email:</label>
-                    <input
-                        type="email"
-                        name="email"
-                        value={formData.email}
-                        onChange={handleChange}
-                    />
-                </div>
-                <div>
-                    <label>Institution:</label>
-                    <input
-                        type="text"
-                        name="institution"
-                        value={formData.institution}
-                        onChange={handleChange}
-                    />
-                </div>
-                <div>
-                    <label>Department:</label>
-                    <input
-                        type="text"
-                        name="department"
-                        value={formData.department}
-                        onChange={handleChange}
-                    />
-                </div>
-                <div>
-                    <label>Password:</label>
-                    <input
-                        type="password"
-                        name="password"
-                        value={formData.password}
-                        onChange={handleChange}
-                    />
-                </div>
-                <div>
-                    <label>StudentID</label>
-                    <input
-                        type="text"
-                        name="studentId"
-                        value={formData.studentId}
-                        onChange={handleChange}
-                    />
-                </div>
-                <button type="submit">Update Profile</button>
-            </form>
-        </div>
-    );
+        {/* Hidden fields for _id and __v so they travel with the payload */}
+        <input type="hidden" name="_id" value={formData._id} />
+        <input type="hidden" name="__v" value={formData.__v} />
+
+        <button type="submit">Update Profile</button>
+      </form>
+    </div>
+  );
 };
 
 export default ProfileUpdatePage;

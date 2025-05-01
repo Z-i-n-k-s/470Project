@@ -13,11 +13,8 @@ app.use(cors());
 app.use(bodyParser.json());
 
 // Connect to MongoDB
-mongoose.connect('mongodb://127.0.0.1:27017/EduMern', {
-    useNewUrlParser: true,
-    useUnifiedTopology: true
-}).then(() => {
-    console.log("Connected to MongoDB!");
+ mongoose.connect('mongodb+srv://Shimanto:1234@cluster0.0wtaafj.mongodb.net/EduMern?retryWrites=true&w=majority&appName=Cluster0').then(() => {
+    console.log("Connected to MongoDB Server !");
 }).catch((error) => {
     console.error("MongoDB connection error:", error);
 });
@@ -66,8 +63,8 @@ app.post('/login', async (req, res) => {
   
   if (isPasswordCorrect) {
       // Save customerId to localStorage after successful login
-      localStorage.setItem("customerId", student.studentId);  // Assuming studentId is unique
-      return res.status(200).json({ message: "Login successful" });
+     // localStorage.setItem("customerId", student.studentId);  // Assuming studentId is unique
+      return res.status(200).json({ data:student ,message: "Login successful" });
   } else {
       return res.status(400).json({ message: "Invalid credentials" });
   }
@@ -75,24 +72,58 @@ app.post('/login', async (req, res) => {
 
 // API Route: Update Student Profile
 app.put('/updateProfile', async (req, res) => {
-  const {  firstName, lastName, email, institution, department, password, studentId } = req.body;
+  // Destructure everything out of the body
+  const {
+    _id,
+    __v,
+    firstName,
+    lastName,
+    email,
+    institution,
+    department,
+    password,
+    studentId
+  } = req.body;
 
   try {
-      // Find the student by studentId and update their information
-      const updatedStudent = await Student.findOneAndUpdate(
-          { studentId }, // Find student by studentId
-          { firstName, lastName, email, institution, department, password, studentId }, // Update data
-          { new: true } // Return the updated document
-      );
-
-      if (!updatedStudent) {
-          return res.status(404).json({ message: "Student not found" });
+    // Option A: Update by Mongo _id
+    const updatedStudent = await Student.findByIdAndUpdate(
+      _id,
+      {
+        firstName,
+        lastName,
+        email,
+        institution,
+        department,
+        password,
+        studentId,
+        __v  // you can include __v if you need to bump the version manually
+      },
+      {
+        new: true,         // return the updated document
+        runValidators: true
       }
+    );
 
-      res.status(200).json({ message: "Profile updated successfully", student: updatedStudent });
+    // // Option B: Update by studentId instead:
+    // const updatedStudent = await Student.findOneAndUpdate(
+    //   { studentId },
+    //   { firstName, lastName, email, institution, department, password },
+    //   { new: true, runValidators: true }
+    // );
+
+    if (!updatedStudent) {
+      return res.status(404).json({ message: 'Student not found' });
+    }
+
+    // Return both a success message and the full updated student record
+    res.status(200).json({
+      message: 'Profile updated successfully',
+      student: updatedStudent
+    });
   } catch (error) {
-      console.error("Error updating profile:", error);
-      res.status(500).json({ message: "Profile update failed" });
+    console.error('Error updating profile:', error);
+    res.status(500).json({ message: 'Profile update failed', error: error.message });
   }
 });
 // API Route: Get Student Profile by StudentId
@@ -173,32 +204,55 @@ app.post('/tlogin', async (req, res) => {
   const isPasswordCorrect = password === teacher.password; // In production, use hashing libraries like bcrypt
   
   if (isPasswordCorrect) {
-    return res.status(200).json({ message: "Login successful" });
+    return res.status(200).json({ data:teacher, message: "Login successful" });
   } else {
     return res.status(400).json({ message: "Invalid credentials" });
   }
 });
-// Update teacher profile
-app.put('/teacher/:email', async (req, res) => {
-  const { email } = req.params;  // Extract email from URL
-  const { firstName, lastName, institution, degree, password } = req.body;
+
+
+// Update teacher profile by _id
+app.put('/teacher/update', async (req, res) => {
+  const {
+    _id,
+    __v,
+    firstName,
+    lastName,
+    email,
+    institution,
+    degree,
+    password
+  } = req.body;
 
   try {
-      const updatedTeacher = await Teacher.findOneAndUpdate(
-          { email },  // Find the teacher by email
-          { firstName, lastName, institution, degree, password },  // Update teacher data
-          { new: true } // Return the updated document
-      );
+    const updatedTeacher = await Teacher.findByIdAndUpdate(
+      _id,
+      {
+        firstName,
+        lastName,
+        email,
+        institution,
+        degree,
+        password,
+        __v  // bump version if you like
+      },
+      { new: true, runValidators: true }
+    );
 
-      if (!updatedTeacher) {
-          return res.status(404).json({ message: 'Teacher not found' });
-      }
-      res.status(200).json(updatedTeacher);  // Return the updated teacher's data
+    if (!updatedTeacher) {
+      return res.status(404).json({ message: 'Teacher not found' });
+    }
+
+    res.status(200).json({
+      message: 'Profile updated successfully',
+      teacher: updatedTeacher
+    });
   } catch (error) {
-      console.error('Error updating teacher:', error);
-      res.status(500).json({ message: 'Failed to update teacher profile.' });
+    console.error('Error updating teacher profile:', error);
+    res.status(500).json({ message: 'Failed to update teacher profile', error: error.message });
   }
 });
+
 
 
 // Course Schema

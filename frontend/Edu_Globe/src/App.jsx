@@ -30,6 +30,7 @@ function App  (){
     {path:'/teacherdash',element:<><Teacherdash/></>},
     {path:'/studentdash',element:<><Studentdash/></>},
     {path:'/studentreg',element:<><Studentreg/></>},
+    {path:'/teacherreg',element:<><Teacherreg/></>},
     {path:"/course/:courseName", element: <Courses />},
     {path:"/course/:courseName", element: <Courses />},
     {path:"/countrycom", element: <Countrycom />},

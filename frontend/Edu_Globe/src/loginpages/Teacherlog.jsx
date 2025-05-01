@@ -18,9 +18,11 @@ const Login = () => {
                   body: JSON.stringify({ email: username, password: password }),
               });
 
-              const data = await response.json();
+              
 
               if (response.ok) {
+                const data = await response.json();
+                localStorage.setItem("userData", JSON.stringify(data.data));
                   // If the login is successful, redirect to Student Dashboard
                   console.log(`Logged in as ${username}`);
                   navigate("/teacherdash");
@@ -61,7 +63,9 @@ const Login = () => {
                     />
                 </div>
 
-                <button onClick={handleLogin} className="login-btn">
+                <button onClick={
+                     handleLogin
+                    } className="login-btn">
                     Log In
                 </button>
 
