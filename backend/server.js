@@ -21,14 +21,25 @@ app.use(bodyParser.json());
 
 // Student Schema
 const studentSchema = new mongoose.Schema({
-    firstName: String,
-    lastName: String,
-    email: { type: String, unique: true },
-    institution: String,
-    department: String,
-    studentId: String,
-    password: String
-}, {collection: "StudentInformation"});
+  firstName:   String,
+  lastName:    String,
+  email:       { type: String, unique: true },
+  institution: String,
+  department:  String,
+  studentId:   String,
+  password:    String
+}, { 
+  collection: 'StudentInformation',
+  toObject: { virtuals: true },
+  toJSON:   { virtuals: true }
+});
+
+// Virtual for courses this student is enrolled in
+studentSchema.virtual('enrolledCourses', {
+  ref: 'Course',
+  localField: '_id',
+  foreignField: 'studentsEnrolled'
+});
 
 const Student = mongoose.model('Student', studentSchema);
 
@@ -146,6 +157,51 @@ app.get('/api/student/:studentId', async (req, res) => {
   }
 });
 
+// Get all courses a student is enrolled in
+app.get('/student/:studentId/courses', async (req, res) => {
+  const { studentId } = req.params;
+
+  try {
+    const studentCourses = await Course.find({ studentsEnrolled: studentId });
+    res.status(200).json(studentCourses);
+  } catch (error) {
+    console.error('Error fetching student courses:', error);
+    res.status(500).json({ message: 'Failed to fetch courses' });
+  }
+});
+
+//student enroll in a course
+app.post('/student/:studentId/courses/:courseId/enroll', async (req, res) => {
+  const { studentId, courseId } = req.params;
+  console.log(studentId)
+
+  try {
+    // 1. Load both documents
+    const [student, course] = await Promise.all([
+      Student.findById( studentId ),
+      Course.findById(courseId)
+    ]);
+    if (!student) return res.status(404).json({ message: 'Student not found' });
+    if (!course)  return res.status(404).json({ message: 'Course not found' });
+
+    // 2. Enroll student (idempotent)
+    await Course.findByIdAndUpdate(
+      courseId,
+      { $addToSet: { studentsEnrolled: student._id } }
+    );
+
+    // 3. Increment teacher revenue by the course price
+    await Teacher.findByIdAndUpdate(
+      course.instructor,
+      { $inc: { revenue: course.price } }
+    );
+
+    res.json({ message: 'Enrollment successful' });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ message: 'Enrollment failed', error: err.message });
+  }
+});
 
 
 
@@ -155,15 +211,32 @@ app.get('/api/student/:studentId', async (req, res) => {
 
 
 
+
+// Teacher Schema
 const teacherSchema = new mongoose.Schema({
-    firstName: String,
-    lastName: String,
-    email: { type: String, unique: true },
-    institution: String,
-    degree: String,
-    courses: { type: [String], default: [] },
-    password: String
-}, { collection: "TeacherInformation" });
+  firstName:   String,
+  lastName:    String,
+  email:       { type: String, unique: true },
+  institution: String,
+  degree:      String,
+  password:    String,
+  revenue: {
+    type: Number,
+    default: 0
+  }
+}, { 
+  collection: 'TeacherInformation',
+  toObject: { virtuals: true },
+  toJSON:   { virtuals: true }
+});
+
+// Virtual for courses this teacher has created
+teacherSchema.virtual('coursesCreated', {
+  ref: 'Course',
+  localField: '_id',
+  foreignField: 'instructor'
+});
+
 
 const Teacher = mongoose.model('Teacher', teacherSchema);
 
@@ -207,6 +280,19 @@ app.post('/tlogin', async (req, res) => {
     return res.status(200).json({ data:teacher, message: "Login successful" });
   } else {
     return res.status(400).json({ message: "Invalid credentials" });
+  }
+});
+
+// Get all courses created by a teacher
+app.get('/teacher/:teacherId/courses', async (req, res) => {
+  const { teacherId } = req.params;
+
+  try {
+    const courses = await Course.find({ instructor: teacherId });
+    res.status(200).json(courses);
+  } catch (error) {
+    console.error('Error fetching teacher courses:', error);
+    res.status(500).json({ message: 'Failed to fetch courses' });
   }
 });
 
@@ -256,24 +342,65 @@ app.put('/teacher/update', async (req, res) => {
 
 
 // Course Schema
-// Course Schema
 const courseSchema = new mongoose.Schema({
-  Course_Name: String,
-  Course_Initial: String,
-  Credit: Number,
-  Department: String,
-  Instructor: String,
-  Prerequisites: String,
-  Description: String,
-  Schedule: String,
-  Location: String,
-  Enrollment: String,
-  Difficulty: String,
-  Exam_Format: String,
-  advanced: { type: Boolean, default: false }  // Added advanced flag to distinguish advanced courses
-}, { collection: "Courses" });
+  Course_Name:       String,
+  Course_Initial:    String,
+  Credit:            Number,
+  Department:        String,
+  instructor: {       // who created it
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'Teacher',
+    required: true
+  },
+  studentsEnrolled: [{ // who’s enrolled
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'Student'
+  }],
+  Prerequisites:     String,
+  Description:       String,
+  Schedule:          String,
+  Location:          String,
+  Difficulty:        String,
+  Exam_Format:       String,
+  price: {           // enrollment fee
+    type: Number,
+    default: 0
+  },
+  advanced: {
+    type: Boolean,
+    default: false
+  }
+}, { collection: 'Courses' });
+
 
 const Course = mongoose.model('Course', courseSchema);
+
+
+
+app.post('/teacher/:teacherId/courses', async (req, res) => {
+  const { teacherId } = req.params;
+  const courseData = {
+    ...req.body,
+    instructor: teacherId
+  };
+
+  try {
+    // 1. Optionally verify teacher exists
+    const teacher = await Teacher.findById(teacherId);
+    if (!teacher) return res.status(404).json({ message: 'Teacher not found' });
+
+    // 2. Create the course
+    const course = await Course.create(courseData);
+
+    res.status(201).json({
+      message: 'Course created',
+      course
+    });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ message: 'Failed to create course', error: err.message });
+  }
+});
 
 
 // API Route: Get all courses

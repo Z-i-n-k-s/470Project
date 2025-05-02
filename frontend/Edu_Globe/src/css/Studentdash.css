@@ -13,9 +13,11 @@
   align-items: center;
   z-index: 10;
 }
+
 .top-navbar h1 {
   color: white;
 }
+
 .menu-btn {
   background: none;
   border: none;
@@ -63,15 +65,16 @@
   cursor: pointer;
 }
 
-.main-container {
+.main-container-3col {
   padding: 2rem;
   display: flex;
-  flex-direction: column;
   gap: 2rem;
 }
 
-.row {
+.column {
+  flex: 1;
   display: flex;
+  flex-direction: column;
   gap: 1.5rem;
 }
 
@@ -87,22 +90,17 @@
 .box.scrollable {
   overflow-y: auto;
   max-height: 400px;
-  /* Adjust as needed */
   padding-right: 8px;
   position: relative;
-  /* Necessary for sticky positioning */
 }
 
 .box.scrollable h2 {
   position: sticky;
-  top: -1;
-  background-color: #fff;
-  /* Add a background color to avoid overlap with content */
+  top: 0;
+  background-color: #f9f9f9;
   padding: 10px;
   z-index: 1;
-  /* Make sure it's above other content */
   border-bottom: 1px solid #ddd;
-  /* Optional: to separate the header from the list */
 }
 
 /* Optional: for custom scrollbar */
@@ -119,13 +117,14 @@
   background-color: transparent;
 }
 
-
 .item {
   display: flex;
   justify-content: space-between;
   align-items: center;
   margin-bottom: 0.8rem;
+  flex-wrap: wrap; /* Helps with responsiveness */
 }
+
 
 .item button {
   padding: 0.4rem 0.8rem;
@@ -137,11 +136,11 @@
 }
 
 .item button:first-child {
-  margin-right: 0.5rem; /* Add a margin to the right of the first button */
+  margin-right: 0.5rem;
 }
 
 .item button:hover {
-  background-color: #0056b3; /* Change background on hover */
+  background-color: #0056b3;
 }
 
 .item button:focus {
@@ -149,19 +148,113 @@
 }
 
 .add-btn {
-  background-color: #28a745; /* Green for ADD */
+  background-color: #28a745;
   color: white;
 }
 
 .details-btn {
-  background-color: #007bff; /* Blue for Details */
+  background-color: #007bff;
   color: white;
 }
 
 .add-btn:hover {
-  background-color: #218838; /* Darker green on hover */
+  background-color: #218838;
 }
 
 .details-btn:hover {
-  background-color: #0056b3; /* Darker blue on hover */
+  background-color: #0056b3;
+}
+
+/* Responsive Design (Optional but recommended) */
+@media (max-width: 900px) {
+  .main-container-3col {
+    flex-direction: column;
+  }
+}
+
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.6);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 999;
+}
+.modal {
+  background: white;
+  padding: 2rem;
+  border-radius: 10px;
+  max-width: 500px;
+  width: 90%;
+  position: relative; /* Ensure that the close button is positioned relative to this container */
+  max-height: 80vh;
+  overflow-y: auto;
+  font-size: 1.2rem; /* Increased font size */
+  line-height: 1.6;  /* Increased line height for better readability */
+}
+
+.modal-close {
+  position: absolute;
+  top: 10px;  /* Distance from the top */
+  right: 10px; /* Distance from the right */
+  background: none;
+  border: none;
+  font-size: 2rem;
+  color: black;  /* Close icon color */
+  cursor: pointer;
+}
+
+
+
+.modal p {
+  margin-bottom: 1rem;  /* Add space between each line */
+}
+
+.popup-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.4);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.popup-box {
+  background-color: #ffffff;
+  padding: 25px 30px;
+  border-radius: 10px;
+  width: 400px;
+  max-width: 90%;
+  text-align: center;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+}
+
+.popup-box h3 {
+  margin-bottom: 15px;
+}
+
+.popup-box p {
+  margin: 10px 0;
+}
+
+.popup-buttons button {
+  margin: 10px 8px 0;
+  padding: 8px 16px;
+  border: none;
+  border-radius: 5px;
+  background-color: #007bff;
+  color: white;
+  cursor: pointer;
+}
+
+.popup-buttons button:last-child {
+  background-color: #6c757d;
 }
