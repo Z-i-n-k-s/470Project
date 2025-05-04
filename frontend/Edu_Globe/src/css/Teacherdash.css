@@ -1,192 +1,475 @@
-.student-page {
-  font-family: sans-serif;
-  color: #333;
+/* Enhanced Teacherdash.css with improved spacing and colors */
+
+:root {
+  --primary-color: #4361ee;
+  --primary-dark: #3a0ca3;
+  --secondary-color: #4cc9f0;
+  --text-color: #333333;
+  --light-bg: #f8f9fa;
+  --border-color: #e0e0e0;
+  --success-color: #2ecc71;
+  --accent-color: #f72585;
 }
 
-.top-navbar {
-  position: sticky;
-  top: 0;
-  background-color: #6200ea;
-  color: white;
-  padding: 1rem;
-  display: flex;
-  align-items: center;
-  z-index: 10;
-}
-
-.menu-btn {
-  background: none;
-  border: none;
-  color: white;
-  font-size: 1.5rem;
-  margin-right: 1rem;
-  cursor: pointer;
-}
-
-.sidebar {
-  position: fixed;
-  top: 0;
-  left: 0;
-  background-color: #222;
-  color: white;
-  width: 250px;
-  height: 100%;
-  padding: 1rem;
-  opacity: 0;
-  z-index: -1;
-  transition: opacity 0.3s ease, z-index 0.3s ease;
-}
-
-.sidebar.open {
-  opacity: 1;
-  z-index: 15;
-}
-
-.close-btn {
-  background: none;
-  border: none;
-  color: white;
-  font-size: 2rem;
-  margin-bottom: 1rem;
-  cursor: pointer;
-}
-
-.sidebar ul {
-  list-style: none;
+body {
+  font-family: 'Roboto', sans-serif;
+  color: var(--text-color);
+  background-color: var(--light-bg);
+  margin: 0;
   padding: 0;
 }
 
-.sidebar li {
-  margin: 1rem 0;
+/* Top Navbar */
+.top-navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: var(--primary-color);
+  color: white;
+  padding: 15px 20px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.menu-btn {
+  background: transparent;
+  border: none;
+  color: white;
+  font-size: 24px;
   cursor: pointer;
 }
 
+.navbar-center h1 {
+  margin: 0;
+  font-size: 22px;
+}
+
+/* Updated Sidebar CSS for Teacherdash.css */
+
+/* Sidebar */
+.sidebar {
+  position: fixed;
+  left: -250px;
+  top: 0;
+  width: 250px;
+  height: 100%;
+  background-color: #2b2d42; /* Dark background for sidebar */
+  color: white;
+  transition: left 0.3s ease;
+  z-index: 1000;
+  box-shadow: 2px 0 5px rgba(0, 0, 0, 0.2);
+  padding-top: 60px;
+}
+
+.sidebar.open {
+  left: 0;
+}
+
+.close-btn {
+  position: absolute;
+  top: 15px;
+  right: 15px;
+  background: transparent;
+  border: none;
+  font-size: 24px;
+  cursor: pointer;
+  color: white;
+}
+
+.close-btn:hover {
+  color: var(--secondary-color);
+}
+
+.sidebar-menu {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.sidebar-menu li {
+  padding: 15px 20px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.sidebar-menu li:hover {
+  background-color: rgba(255, 255, 255, 0.1);
+}
+
+.sidebar-menu a {
+  color: white;
+  text-decoration: none;
+  display: block;
+  transition: color 0.2s ease;
+}
+
+.sidebar-menu a:hover {
+  color: var(--secondary-color);
+}
+
+/* Active menu item */
+.sidebar-menu li.active {
+  background-color: var(--primary-color);
+}
+
+/* To ensure sidebar works well with the rest of your layout */
+.teacher-page {
+  position: relative;
+  min-height: 100vh;
+}
+
+/* Adjust main container to account for sidebar when open */
+@media (min-width: 768px) {
+  .sidebar.open + .main-container {
+    margin-left: 250px;
+    width: calc(100% - 250px);
+  }
+}
+
+/* Main Container */
 .main-container {
-  padding: 2rem;
-  display: flex;
-  flex-direction: column;
-  gap: 2rem;
-}
-
-
-
-
-.item {
-  margin-bottom: 0.7rem;
-  font-size: 1rem;
-}
-
-.announcement-input {
   width: 100%;
-  padding: 0.5rem;
-  margin-bottom: 0.7rem;
-  border: 1px solid #ccc;
-  border-radius: 5px;
+  padding: 20px;
+  box-sizing: border-box;
+  margin-top: 10px;
 }
 
-.box button {
-  padding: 0.5rem 1rem;
-  background: #6200ea;
+/* Dashboard Columns */
+.dashboard-columns {
+  display: flex;
+  width: 100%;
+  gap: 25px;
+  flex-wrap: wrap;
+}
+
+.dashboard-column {
+  flex: 1;
+  min-width: 300px;
+}
+
+.dashboard-box {
+  background-color: white;
+  border-radius: 8px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+  padding: 20px;
+  margin-bottom: 25px;
+}
+
+.dashboard-box h2 {
+  color: var(--primary-dark);
+  margin-top: 0;
+  margin-bottom: 20px;
+  padding-bottom: 10px;
+  border-bottom: 2px solid var(--border-color);
+  font-size: 18px;
+}
+
+/* Course Section */
+.course-list {
+  margin-bottom: 20px;
+  max-height: 250px;
+  overflow-y: auto;
+}
+
+.course-item {
+  padding: 12px 15px;
+  margin-bottom: 10px;
+  background-color: var(--light-bg);
+  border-radius: 6px;
+  border-left: 4px solid var(--primary-color);
+}
+
+.empty-message {
+  color: #888;
+  font-style: italic;
+}
+
+/* Action Buttons */
+.action-button {
+  background-color: var(--primary-color);
   color: white;
   border: none;
-  border-radius: 5px;
+  padding: 10px 15px;
+  border-radius: 4px;
   cursor: pointer;
+  font-weight: 500;
+  transition: all 0.2s ease;
 }
 
-.box button:hover {
-  background: #4500b5;
+.action-button:hover {
+  background-color: var(--primary-dark);
+  transform: translateY(-2px);
 }
 
+/* Chart Box */
+.chart-box {
+  height: 380px;
+}
+
+/* Announcement Section */
+.announcement-list {
+  margin-bottom: 20px;
+  max-height: 150px;
+  overflow-y: auto;
+}
+
+.announcement-item {
+  padding: 12px 15px;
+  margin-bottom: 12px;
+  background-color: var(--light-bg);
+  border-radius: 6px;
+  border-left: 4px solid var(--accent-color);
+}
+
+.announcement-course {
+  color: var(--accent-color);
+  font-weight: 500;
+  margin-right: 8px;
+}
+
+.announcement-title {
+  display: block;
+  margin-bottom: 6px;
+}
+
+.announcement-content {
+  margin: 2px 0 0;
+  color: #555;
+  font-size: 14px;
+  width: 100%;
+}
+
+.announcement-form {
+  display: flex;
+  flex-direction: column;
+}
+
+.announcement-form label {
+  margin-top: 12px;
+  margin-bottom: 5px;
+  font-weight: 500;
+}
+
+.announcement-form select,
+.announcement-form input,
+.announcement-form textarea {
+  padding: 10px;
+  border: 1px solid var(--border-color);
+  border-radius: 4px;
+  margin-bottom: 8px;
+}
+
+.announcement-form button {
+  margin-top: 15px;
+  align-self: flex-start;
+}
+
+/* Popup */
 .popup {
   position: fixed;
-  top: 0; left: 0;
-  width: 100%; height: 100%;
-  background-color: rgba(0,0,0,0.6);
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
   display: flex;
   justify-content: center;
   align-items: center;
-  z-index: 999;
+  z-index: 1000;
 }
 
 .popup-inner {
-  background: #fff;
-  padding: 20px 30px;
-  border-radius: 10px;
-  width: 400px;
-  max-height: 90vh;       /* Limit the popup height */
-  overflow-y: auto;       /* Make inner content scrollable */
   position: relative;
+  background-color: white;
+  padding: 30px;
+  border-radius: 8px;
+  width: 80%;
+  max-width: 600px;
+  max-height: 80vh;           /* Restrict height to 80% of viewport */
+  overflow-y: auto;           /* Add vertical scroll if content overflows */
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
 }
 
 
-.input-group {
-  margin-bottom: 15px;
-  display: flex;
-  flex-direction: column;
-}
-
-.input-group label {
-  margin-bottom: 5px;
-  font-weight: bold;
-}
-
-.popup-input {
-  padding: 8px;
-  font-size: 16px;
-  border-radius: 5px;
-  border: 1px solid #ccc;
-}
-
-.popup-actions {
-  display: flex;
-  justify-content: space-between;
-  margin-top: 20px;
-}
-
+/* Popup close button */
 .close-popup {
   position: absolute;
   top: 10px;
-  right: 15px;
-  font-size: 24px;
+  right: 10px;
+  background-color: transparent;
   border: none;
-  background: transparent;
+  font-size: 24px;
   cursor: pointer;
-}
-
-
-/* --- ROW CONTAINER --- */
-.row {
+  width: 40px;
+  height: 40px;
   display: flex;
-  flex-wrap: wrap;               /* allow wrapping to next line */
-  gap: 1.5rem;                   /* consistent gutters */
-  justify-content: space-between;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  color: #555;
+  transition: background-color 0.2s ease, color 0.2s ease;
 }
 
-/* --- BOX PANELS --- */
-.box {
-  background: #f9f9f9;
-  padding: 1rem;
-  border-radius: 8px;
-  overflow: hidden;
-  
-  /* flex child sizing: */
-  flex: 1 1 calc(33% - 1rem);   /* three per row, minus gutter */
-  min-width: 250px;             /* never smaller than this */
-  
-  display: flex;
-  flex-direction: column;       /* stack header/content/buttons */
-  justify-content: space-between; /* equal-height boxes */
+.close-popup:hover {
+  background-color: rgba(0, 0, 0, 0.1);
+  color: var(--primary-color);
 }
 
-/* --- RESPONSIVE BREAKPOINTS --- */
-@media (max-width: 1024px) {
-  .box {
-    flex: 1 1 calc(50% - 1rem);  /* two per row on medium screens */
+.form-group {
+  margin-bottom: 20px;
+}
+
+.form-group label {
+  display: block;
+  margin-bottom: 8px;
+  font-weight: 500;
+}
+
+.form-group input {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid var(--border-color);
+  border-radius: 4px;
+  box-sizing: border-box;
+}
+
+/* For mobile responsiveness */
+@media (max-width: 768px) {
+  .dashboard-columns {
+    flex-direction: column;
+  }
+  
+  .dashboard-column {
+    width: 100%;
+  }
+  
+  .popup-inner {
+    width: 90%;
+    padding: 20px;
   }
 }
 
-@media (max-width: 600px) {
-  .box {
-    flex: 1 1 100%;              /* one per row on mobile */
-  }
+/* Slider Container */ 
+.ads-row {   
+  width: 100%;   
+  margin-bottom: 1.5rem;
+  display: flex;
+  justify-content: center;
+}  
+
+.slider-container {   
+  position: relative;
+  width: 60%;   
+  height: 300px;   
+  overflow: hidden;   
+  background-color: black;   
+  border-radius: 10px;   
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+  margin: 0 auto; /* Centers the container horizontally */
+}  
+
+/* Slides */ 
+.slides {   
+  width: 100%;   
+  height: 100%;   
+  position: relative; 
+}  
+
+.slide {   
+  position: absolute;   
+  top: 0;   
+  left: 0;   
+  width: 100%;   
+  height: 100%;   
+  display: flex;   
+  align-items: center;   
+  justify-content: center;   
+  background-color: black;   
+  transition: transform 0.5s ease-in-out; 
+}  
+
+.slide img {   
+  width: 100%;   
+  height: auto;   
+  max-height: 100%;   
+  object-fit: contain; 
+}  
+
+/* Navigation Buttons */ 
+.slider-btn {   
+  position: absolute;   
+  top: 50%;   
+  transform: translateY(-50%);   
+  width: 40px;   
+  height: 40px;   
+  background-color: rgba(255, 255, 255, 0.5);   
+  color: #333;   
+  border: none;   
+  border-radius: 50%;   
+  font-size: 18px;   
+  display: flex;   
+  align-items: center;   
+  justify-content: center;   
+  cursor: pointer;   
+  z-index: 10;   
+  transition: all 0.3s; 
+}  
+
+.slider-btn:hover {   
+  background-color: rgba(255, 255, 255, 0.8); 
+}  
+
+.prev-btn {   
+  left: 10px; 
+}  
+
+.next-btn {   
+  right: 10px; 
+}  
+
+/* Dots Navigation */ 
+.dots-container {   
+  position: absolute;   
+  bottom: 20px;   
+  left: 50%;   
+  transform: translateX(-50%);   
+  display: flex;   
+  gap: 8px; 
+}  
+
+.dot {   
+  width: 12px;   
+  height: 12px;   
+  border-radius: 50%;   
+  background-color: rgba(255, 255, 255, 0.5);   
+  cursor: pointer;   
+  transition: all 0.3s; 
+}  
+
+.dot.active {   
+  background-color: white;   
+  transform: scale(1.2); 
+}  
+
+/* Loading Placeholder */ 
+.loading-placeholder {   
+  width: 100%;   
+  height: 100%;   
+  display: flex;   
+  align-items: center;   
+  justify-content: center;   
+  color: white;   
+  background-color: #333;   
+  font-size: 1.2rem; 
+}  
+
+/* Fade Animation */ 
+@keyframes fadeIn {   
+  from { opacity: 0; }   
+  to { opacity: 1; } 
+}  
+
+.slide.active {   
+  z-index: 2;   
+  animation: fadeIn 0.5s ease-in; 
 }

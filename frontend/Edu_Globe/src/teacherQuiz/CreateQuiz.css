@@ -1,0 +1,86 @@
+/* CreateQuiz.css */
+.create-quiz-page {
+    max-width: 800px;
+    margin: 2rem auto;
+    padding: 1rem;
+    background: #fff;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+  }
+  
+  .create-quiz-page h2 {
+    margin-bottom: 1rem;
+    color: #333;
+  }
+  
+  .form-group {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 1.5rem;
+  }
+  
+  .form-group label {
+    margin-bottom: 0.5rem;
+    font-weight: 600;
+  }
+  
+  .form-group input,
+  .form-group select {
+    padding: 0.6rem;
+    font-size: 1rem;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+  }
+  
+  .question-block {
+    margin-bottom: 2rem;
+    padding: 1rem;
+    border: 1px solid #eee;
+    border-radius: 6px;
+    background: #fafafa;
+  }
+  
+  .options {
+    display: flex;
+    flex-direction: column;
+    gap: 0.8rem;
+    margin-top: 1rem;
+  }
+  
+  .option-group {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+  
+  .option-group input[type="radio"] {
+    margin-top: 0.2rem;
+  }
+  
+  .option-group input[type="text"] {
+    flex: 1;
+    padding: 0.5rem;
+  }
+  
+  .buttons {
+    display: flex;
+    gap: 1rem;
+    justify-content: flex-end;
+    margin-top: 1rem;
+  }
+  
+  .buttons button {
+    padding: 0.7rem 1.2rem;
+    font-size: 1rem;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    background: #6200ea;
+    color: #fff;
+    transition: background 0.2s;
+  }
+  
+  .buttons button:hover {
+    background: #4500b5;
+  }
+  

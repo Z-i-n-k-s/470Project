@@ -4,61 +4,98 @@ import '../css/Countrycom.css';
 const CountryComparison = () => {
   const [countries, setCountries] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [isDarkMode, setIsDarkMode] = useState(false); // State for dark mode toggle
+  const [isDarkMode, setIsDarkMode] = useState(false);
 
   useEffect(() => {
-    fetch('http://localhost:5000/countries') // Replace with your actual API route
+    fetch('http://localhost:5000/countries')
       .then(res => res.json())
       .then(data => {
-        if (Array.isArray(data)) {
-          // Sanitize costs and facilities if they are strings
-          const parsedData = data.map(country => ({
-            ...country,
-            costs: typeof country.costs === 'string' ? JSON.parse(country.costs.replace(/'/g, '"')) : country.costs,
-            facilities: typeof country.facilities === 'string' ? JSON.parse(country.facilities.replace(/'/g, '"')) : country.facilities
-          }));
-          setCountries(parsedData); // Only set if it's an array
-        } else {
-          console.error("API response is not an array:", data);
+        if (!Array.isArray(data)) {
+          console.error('API response is not an array:', data);
+          setLoading(false);
+          return;
         }
+
+        const parsed = data.map(raw => {
+          const { name, currency, ...rest } = raw;
+
+          // rebuild costs
+          const costs = Object.keys(rest).reduce((acc, key) => {
+            if (key.startsWith('costs.')) {
+              const field = key.split('.')[1];
+              acc[field] = Number(rest[key]);
+            }
+            return acc;
+          }, {});
+
+          // rebuild facilities
+          const facilitiesMap = {};
+          Object.keys(rest).forEach(key => {
+            const m = key.match(/^facilities\[(\d+)\]\.(name|rating)$/);
+            if (m) {
+              const idx = m[1];
+              const prop = m[2];
+              const val = rest[key];
+              if (val !== '' && val != null) {
+                facilitiesMap[idx] = facilitiesMap[idx] || {};
+                facilitiesMap[idx][prop] = prop === 'rating' ? Number(val) : val;
+              }
+            }
+          });
+          const facilities = Object.values(facilitiesMap);
+
+          return { name, currency, costs, facilities };
+        });
+
+        setCountries(parsed);
         setLoading(false);
       })
       .catch(err => {
-        console.error("Error fetching data:", err);
+        console.error('Error fetching data:', err);
         setLoading(false);
       });
   }, []);
 
-  // Toggle dark mode
-  const toggleDarkMode = () => {
-    setIsDarkMode(prevMode => !prevMode);
-  };
+  const toggleDarkMode = () => setIsDarkMode(d => !d);
 
   if (loading) return <div className="comparison-container">Loading...</div>;
 
   return (
-    <div className={`comparison-container ${isDarkMode ? 'dark' : 'light'}`}> {/* Apply conditional classes */}
+    <div className={`comparison-container ${isDarkMode ? 'dark' : 'light'}`}>
       <h1 className="comparison-title">Country Comparison</h1>
       <button onClick={toggleDarkMode} className="dark-mode-toggle">
         {isDarkMode ? 'Switch to Light Mode' : 'Switch to Dark Mode'}
       </button>
+
       <div className="country-grid">
-        {countries.map((country, index) => (
-          <div className="country-card" key={index}>
-            <h2 className="country-name">{country.name} ({country.currency})</h2>
+        {countries.map((country, idx) => (
+          <div className="country-card" key={idx}>
+            <h2 className="country-name">
+              {country.name} ({country.currency})
+            </h2>
+
             <div className="cost-breakdown">
-              <p><strong>Accommodation:</strong> {country.costs.accommodation}</p>
-              <p><strong>Food:</strong> {country.costs.food}</p>
-              <p><strong>Transport:</strong> {country.costs.transport}</p>
-              <p className="total-cost"><strong>Total:</strong> {country.costs.total}</p>
+              <p>
+                <strong>Accommodation:</strong> {country.costs.accommodation}
+              </p>
+              <p>
+                <strong>Food:</strong> {country.costs.food}
+              </p>
+              <p>
+                <strong>Transport:</strong> {country.costs.transport}
+              </p>
+              <p className="total-cost">
+                <strong>Total:</strong> {country.costs.total}
+              </p>
             </div>
-            {country.facilities && country.facilities.length > 0 && (
+
+            {country.facilities.length > 0 && (
               <div className="facility-section">
                 <h3>Student Facilities</h3>
                 <ul>
-                  {country.facilities.map((facility, i) => (
+                  {country.facilities.map((f, i) => (
                     <li key={i}>
-                      {facility.name} - {facility.rating} ⭐
+                      {f.name} – {f.rating} ⭐
                     </li>
                   ))}
                 </ul>

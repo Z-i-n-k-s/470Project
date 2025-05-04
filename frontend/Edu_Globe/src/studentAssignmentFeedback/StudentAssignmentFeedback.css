@@ -1,0 +1,49 @@
+/* StudentAssignmentFeedback.css */
+
+.student-feedback-container {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 24px;
+  }
+  
+  .student-feedback-container h2 {
+    text-align: center;
+    margin-bottom: 24px;
+  }
+  
+  .no-submissions {
+    text-align: center;
+    font-style: italic;
+    color: #666;
+  }
+  
+  .submission-card {
+    background: #fff;
+    border-radius: 8px;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+    padding: 16px;
+    margin-bottom: 20px;
+  }
+  
+  .submission-image {
+    max-width: 100%;
+    border-radius: 4px;
+    margin-bottom: 12px;
+  }
+  
+  .feedback-box {
+    background: #f9f9f9;
+    border-radius: 4px;
+    padding: 12px;
+  }
+  
+  .feedback-box h4 {
+    margin-top: 0;
+    margin-bottom: 8px;
+  }
+  
+  .no-feedback {
+    color: #888;
+    font-style: italic;
+  }
+  

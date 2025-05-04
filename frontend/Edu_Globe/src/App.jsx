@@ -12,29 +12,53 @@ import Teacherreg from './register/Teacherreg';
 import Courses from './courses/Courses';
 import Unilist from './Unilist/Unilist';
 import Countrycom from './Unilist/Countrycom';
-import Recordclass from './recordedclass/recordclass';
+
 import Teacheronline from './onlineclass/Teacheronline';
 import Studentonline from './onlineclass/Studentonline';
 import StudentProfileEdit from './ProfileEdit/StudentProfileEdit';
 import TeacherProfileEdit from './ProfileEdit/TeacherProfileEdit';
+import CreateQuiz from './teacherQuiz/CreateQuiz';
+import TakeQuiz from './studentQuiz/TakeQuiz';
+import CreateAssignment from './teacherAssignment/CreateAssignment';
+import SubmitAssignment from './studentAssignment/SubmitAssignment';
+import AssignmentFeedback from './TeacherAssignmentFeedback/AssignmentFeedback';
+import StudentAssignmentFeedback from './studentAssignmentFeedback/StudentAssignmentFeedback';
+import Logout from './logout/Logout';
+import TeacherInfo from './details/TeacherInfo';
+import StudentInfo from './details/StudentInfo';
+import CreateAds from './ads/CreateAds';
+import Certificate from './certificates/Certificate';
+import Recordedclass from './recordedclass/RecordedClass';
+import ViewRecord from './viewrecord/ViewRecord';
 function App  (){
   const [userRole, setUserRole] = useState('');
 
   // Create a dynamic router based on user role
   const router = createBrowserRouter([
     {path:'/',element:<><Login/></>},
+    {path:'/logout',element:<><Logout/></>},
     {path:'/studentlog',element:<><Studentlog/></>},
     {path:'/teacherlog',element:<><Teacherlog/></>},
     {path:'/adminlog',element:<><Adminlog/></>},
     {path:'/admindash',element:<><Admindash/></>},
+    {path:'/createads',element:<><CreateAds/></>},
     {path:'/teacherdash',element:<><Teacherdash/></>},
     {path:'/studentdash',element:<><Studentdash/></>},
+    {path:'/cretificate',element:<><Certificate/></>},
     {path:'/studentreg',element:<><Studentreg/></>},
+    {path:'/takequiz',element:<><TakeQuiz/></>},
+    {path:'/createassignment',element:<><CreateAssignment/></>},
+    {path:'/submitassignment',element:<><SubmitAssignment/></>},
+    {path:'/assignmentfeedback',element:<><AssignmentFeedback/></>},
+    {path:'/studentassignmentfeedback',element:<><StudentAssignmentFeedback/></>},
+   { path:'/teacher/:teacherId', element:<><TeacherInfo/></>},
+   { path:'/student/:studentId', element:<><StudentInfo/></>},
     {path:'/teacherreg',element:<><Teacherreg/></>},
-    {path:"/course/:courseName", element: <Courses />},
-    {path:"/course/:courseName", element: <Courses />},
+    {path:'/createQuiz',element:<><CreateQuiz/></>},
+    {path:"/course/:courseName/:returnto", element: <Courses />},
     {path:"/countrycom", element: <Countrycom />},
-    {path:"/recordedclass", element: <Recordclass />},
+    {path:"/recordedclass", element: <Recordedclass />},
+    {path:"/viewrecordedclass", element: <ViewRecord />},
     {path:"/teacheronline", element: <Teacheronline />},
     {path:"/studentonline", element: <Studentonline />},
     {path:'/unilist',element:<><Unilist/></>},

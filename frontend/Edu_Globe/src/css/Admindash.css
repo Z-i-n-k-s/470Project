@@ -1,243 +1,564 @@
-/* Body and General Setup */
-body {
+/* Admindash.css */
+
+/* Base styles */
+* {
+  box-sizing: border-box;
   margin: 0;
-  font-family: 'Segoe UI', sans-serif;
-  background-color: #f4f4f9;
+  padding: 0;
 }
 
-.main-container {
+body {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  line-height: 1.6;
+  color: #333;
+  background-color: #f5f7fa;
+}
+
+a {
+  text-decoration: none;
+  color: #2c6ecb;
+}
+
+button {
+  cursor: pointer;
+}
+
+ul {
+  list-style: none;
+}
+
+/* Admin Page Layout */
+.admin-page {
   display: flex;
-  gap: 1.5rem;
-  padding: 2rem;
-  flex-wrap: nowrap;
-  overflow-x: auto;
+  flex-direction: column;
+  min-height: 100vh;
 }
 
 /* Top Navbar */
 .top-navbar {
+  background-color: #2c6ecb;
+  color: white;
+  padding: 1rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   position: sticky;
   top: 0;
-  background-color: #6200ea;
-  color: white;
-  padding: 1rem 2rem;
-  display: flex;
-  align-items: center;
-  gap: 1rem;
-  z-index: 10;
+  z-index: 100;
 }
 
-.top-navbar h1 {
+.navbar-left, .navbar-right {
+  display: flex;
+  align-items: center;
+}
+
+.navbar-center h1 {
   margin: 0;
-  flex-grow: 1;
+  font-size: 1.5rem;
 }
 
 .menu-btn {
   background: none;
   border: none;
-  font-size: 1.5rem;
   color: white;
+  font-size: 1.5rem;
   cursor: pointer;
+  margin-right: 1rem;
 }
 
 /* Sidebar */
 .sidebar {
   position: fixed;
+  left: -250px;
   top: 0;
-  left: 0;
-  height: 100%;
   width: 250px;
-  background-color: #333;
+  height: 100%;
+  background-color: #2b2d42; /* Dark background for sidebar */
   color: white;
-  padding: 2rem 1rem;
-  opacity: 0;
-  z-index: -1;
-  transition: all 0.3s ease;
+  transition: left 0.3s ease;
+  z-index: 1000;
+  box-shadow: 2px 0 5px rgba(0, 0, 0, 0.2);
+  padding-top: 60px;
 }
 
 .sidebar.open {
-  opacity: 1;
-  z-index: 20;
+  left: 0;
 }
 
-.sidebar .close-btn {
-  background: none;
+.close-btn {
+  position: absolute;
+  top: 15px;
+  right: 15px;
+  background: transparent;
   border: none;
-  font-size: 1.8rem;
-  color: white;
+  font-size: 24px;
   cursor: pointer;
-  margin-bottom: 1rem;
+  color: white;
 }
 
-.sidebar ul {
+.close-btn:hover {
+  color: var(--secondary-color);
+}
+/* Sidebar */
+.sidebar {
+  position: fixed;
+  left: -250px;
+  top: 0;
+  width: 250px;
+  height: 100%;
+  background-color: #2b2d42; /* Dark background for sidebar */
+  color: white;
+  transition: left 0.3s ease;
+  z-index: 1000;
+  box-shadow: 2px 0 5px rgba(0, 0, 0, 0.2);
+  padding-top: 60px;
+  overflow-y: auto; /* Allow scrolling if menu is tall */
+}
+
+.sidebar.open {
+  left: 0;
+}
+
+.close-btn {
+  position: absolute;
+  top: 15px;
+  right: 15px;
+  background: transparent;
+  border: none;
+  font-size: 24px;
+  cursor: pointer;
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  color: white;
+  transition: background-color 0.2s ease;
+}
+
+.close-btn:hover {
+  background-color: rgba(255, 255, 255, 0.1);
+}
+
+.sidebar-menu {
   list-style: none;
   padding: 0;
+  margin: 0;
 }
 
-.sidebar li {
-  margin: 1rem 0;
-  cursor: pointer;
+.sidebar-menu li {
+  margin: 0;
+  padding: 0;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
 }
 
-/* Main Container */
-.main-container {
-  display: flex;
-  gap: 1.5rem;
-  padding: 2rem;
-  flex-wrap: nowrap;
+.sidebar-menu li:last-child {
+  border-bottom: none;
 }
 
-.box {
-  background: white;
-  border-radius: 12px;
-  padding: 1rem;
+.sidebar-menu a {
+  color: white;
+  text-decoration: none;
+  display: block;
+  padding: 15px 20px;
+  transition: all 0.2s ease;
+}
+
+.sidebar-menu a:hover {
+  background-color: rgba(255, 255, 255, 0.1);
+  color: var(--secondary-color, #4cc9f0);
+  padding-left: 25px; /* Slight indent on hover */
+}
+
+/* Active menu item */
+.sidebar-menu li.active a {
+  background-color: var(--primary-color, #4361ee);
+  border-left: 4px solid white;
+}
+
+/* To ensure sidebar works well with the rest of your layout */
+.teacher-page {
+  position: relative;
+  min-height: 100vh;
+}
+
+/* Adjust main container to account for sidebar when open */
+@media (min-width: 768px) {
+  .sidebar.open ~ .main-container {
+    margin-left: 250px;
+    width: calc(100% - 250px);
+    transition: margin-left 0.3s ease, width 0.3s ease;
+  }
+}
+
+
+/* Main Content */
+.main-content {
   flex: 1;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-  overflow-y: auto;
-  max-height: 500px;
+  padding: 1.5rem;
+  margin-left: 0;
+  transition: margin-left 0.3s ease;
 }
 
-.box h2 {
+.main-content.shifted {
+  margin-left: 250px;
+}
+
+@media (min-width: 992px) {
+  .sidebar {
+    left: 0;
+  }
+  
+  .main-content {
+    margin-left: 250px;
+  }
+  
+  .menu-btn {
+    display: none;
+  }
+}
+
+/* Dashboard Grid */
+.dashboard-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+/* Overview Cards */
+.overview-cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 1rem;
   margin-bottom: 1rem;
 }
 
-/* Scrollable Courses Box */
-.courses-box {
-  max-height: 500px;
-  overflow-y: auto;
+.card {
+  background-color: white;
+  padding: 1.5rem;
+  border-radius: 8px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+  text-align: center;
 }
 
-/* General Item Style */
-.item {
+.card h3 {
+  font-size: 1rem;
+  margin-bottom: 0.5rem;
+  color: #666;
+}
+
+.card-value {
+  font-size: 2rem;
+  font-weight: bold;
+  color: #2c6ecb;
+}
+
+/* Three Column Grid */
+.three-column-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1.5rem;
+}
+
+@media (min-width: 768px) {
+  .three-column-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+/* The critical fix for columns */
+.column {
+  background-color: white;
+  border-radius: 8px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+  overflow: hidden;
+  height: 500px;
+  display: flex;          /* Add this */
+  flex-direction: column; /* Add this */
+}
+
+.column-header {
+  padding: 1rem;
+  background-color: #f9fafb;
+  border-bottom: 1px solid #eee;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin: 0.5rem 0;
+  flex-shrink: 0;         /* Add this */
 }
 
-button {
-  background-color: #6200ea;
-  color: white;
-  border: none;
-  padding: 0.4rem 0.8rem;
-  border-radius: 8px;
-  cursor: pointer;
-}
-
-button:hover {
-  background-color: #4500b5;
-}
-
-/* Announcement Box */
-.announcement-input {
-  display: flex;
-  gap: 0.5rem;
-  margin-bottom: 1rem;
-}
-
-.announcement-input input {
-  flex: 1;
-  padding: 0.5rem 0.8rem;
-  border-radius: 8px;
-  border: 1px solid #ccc;
-  font-size: 1rem;
-}
-
-.announcement-input button {
-  background-color: #6200ea;
-  color: white;
-  border: none;
-  padding: 0.5rem 1rem;
-  border-radius: 8px;
-  cursor: pointer;
-  font-size: 1rem;
-}
-
-.announcement-input button:hover {
-  background-color: #4500b5;
-}
-
-.announcement-list {
+.column-content {
+  padding: 1rem;
   overflow-y: auto;
-  max-height: 300px;
+  height: calc(100% - 60px); /* Add this to make it take the rest of the space */
 }
 
-.announcement-box {
-  flex: 1.5;
-}
-.courses-box {
-  max-height: 500px; /* or any height you prefer */
-  overflow-y: auto;
-}
-
-/* Optional — make the scrollbar look nicer */
-.courses-box::-webkit-scrollbar {
-  width: 8px;
-}
-
-.courses-box::-webkit-scrollbar-thumb {
-  background-color: #888;
-  border-radius: 4px;
-}
-
-.courses-box::-webkit-scrollbar-thumb:hover {
-  background-color: #555;
-}
-/* Keep using the .box.scrollable class you had */
-
-.scrollable {
-  overflow-y: auto;
-  max-height: 500px;
-}
-
-.scrollable h2 {
-  position: sticky;
-  top: -1;
-  background: #fff;
-  padding: 0.5rem;
-  z-index: 1;
-  border-bottom: 1px solid #ddd;
-}
-
-.scrollable::-webkit-scrollbar {
-  width: 8px;
-}
-
-.scrollable::-webkit-scrollbar-thumb {
-  background-color: #888;
-  border-radius: 4px;
-}
-
-.scrollable::-webkit-scrollbar-thumb:hover {
-  background-color: #555;
-}
-
-.box.scrollable {
-  overflow-y: auto;
-  max-height: 400px;
-  padding-right: 8px;
-  position: relative;
-}
-
-.box.scrollable h2 {
-  position: sticky;
-  top: -1;
-  background-color: #fff;
-  padding: 10px;
-  z-index: 1;
-  border-bottom: 1px solid #ddd;
-}
-
-/* Optional: for custom scrollbar */
-.box.scrollable::-webkit-scrollbar {
+/* Custom scrollbar styling for better experience */
+.column-content::-webkit-scrollbar {
   width: 6px;
 }
 
-.box.scrollable::-webkit-scrollbar-thumb {
-  background-color: #ccc;
-  border-radius: 4px;
+.column-content::-webkit-scrollbar-track {
+  background: #f1f1f1;
+  border-radius: 8px;
 }
 
-.box.scrollable::-webkit-scrollbar-track {
-  background-color: transparent;
+.column-content::-webkit-scrollbar-thumb {
+  background: #c1c1c1;
+  border-radius: 8px;
+}
 
+.column-content::-webkit-scrollbar-thumb:hover {
+  background: #a8a8a8;
+}
+
+.column-header h2 {
+  font-size: 1.2rem;
+  margin: 0;
+  color: #444;
+}
+
+.view-all {
+  font-size: 0.85rem;
+  color: #2c6ecb;
+}
+
+
+
+.column-item {
+  padding: 0.75rem;
+  border-bottom: 1px solid #eee;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.column-item:last-child {
+  border-bottom: none;
+}
+
+.item-details h4 {
+  margin: 0 0 0.25rem;
+  font-size: 1rem;
+}
+
+.item-details p {
+  margin: 0;
+  font-size: 0.85rem;
+  color: #666;
+}
+
+.button {
+  padding: 0.5rem 1rem;
+  background-color: #2c6ecb;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  font-size: 0.85rem;
+  cursor: pointer;
+  transition: background-color 0.2s;
+  display: inline-block;
+}
+
+.button:hover {
+  background-color: #1e5bb0;
+}
+
+/* Also update the tab content containers to have better height control */
+.courses-container,
+.students-container,
+.teachers-container {
+  height: calc(100vh - 120px); /* Take most of the viewport height minus navbar */
+  overflow-y: auto;
+}
+
+.courses-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 1.5rem;
+}
+
+.course-card {
+  background-color: white;
+  border-radius: 8px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+  padding: 1.5rem;
+}
+
+.course-card h3 {
+  margin: 0 0 1rem;
+  color: #333;
+}
+
+.course-card p {
+  margin-bottom: 1rem;
+  color: #666;
+}
+
+.course-card .button {
+  margin-top: 1rem;
+}
+
+/* Students & Teachers Tabs */
+.students-list,
+.teachers-list {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1rem;
+}
+
+@media (min-width: 768px) {
+  .students-list,
+  .teachers-list {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+.student-item,
+.teacher-item {
+  background-color: white;
+  border-radius: 8px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+  padding: 1rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.student-info h3,
+.teacher-info h3 {
+  margin: 0 0 0.5rem;
+  font-size: 1.1rem;
+}
+
+.student-info p,
+.teacher-info p {
+  margin: 0;
+  color: #666;
+  font-size: 0.9rem;
+}
+
+/* Detail Pages (CourseInfo, TeacherInfo, StudentInfo) */
+.detail-page {
+  max-width: 800px;
+  margin: 2rem auto;
+  padding: 0 1rem;
+}
+
+.detail-card {
+  background-color: white;
+  border-radius: 8px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  padding: 2rem;
+}
+
+.detail-title {
+  margin: 0 0 1.5rem;
+  color: #2c6ecb;
+  padding-bottom: 1rem;
+  border-bottom: 1px solid #eee;
+}
+
+.detail-content p {
+  margin-bottom: 1rem;
+  line-height: 1.8;
+}
+
+.bio-section,
+.address-section,
+.courses-section,
+.attendance-section {
+  margin-top: 1.5rem;
+  padding-top: 1rem;
+  border-top: 1px solid #eee;
+}
+
+.bio-section h3,
+.address-section h3,
+.courses-section h3,
+.attendance-section h3 {
+  margin-bottom: 0.75rem;
+  color: #444;
+}
+
+.courses-list {
+  list-style-type: disc;
+  padding-left: 1.5rem;
+}
+
+.courses-list li {
+  margin-bottom: 0.5rem;
+}
+
+.loading-container,
+.not-found-container {
+  text-align: center;
+  padding: 3rem;
+  font-size: 1.2rem;
+  color: #666;
+}
+
+.back-button {
+  margin-top: 2rem;
+  padding: 0.6rem 1.2rem;
+  background-color: #6c757d;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.back-button:hover {
+  background-color: #5a6268;
+}
+
+.menu-btn {
+  background: none;
+  border: none;
+  color: white;
+  font-size: 1.5rem;
+  cursor: pointer;
+  margin-right: 1rem;
+  padding: 0.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.menu-icon {
+  display: inline-block;
+  font-size: 1.8rem;
+  line-height: 1;
+  font-weight: bold;
+}
+
+/* Alternative approach using CSS instead of character */
+.menu-icon-alt {
+  display: block;
+  width: 24px;
+  height: 3px;
+  background-color: white;
+  position: relative;
+  transition: background-color 0.3s;
+}
+
+.menu-icon-alt::before,
+.menu-icon-alt::after {
+  content: '';
+  position: absolute;
+  width: 100%;
+  height: 3px;
+  background-color: white;
+  left: 0;
+}
+
+.menu-icon-alt::before {
+  top: -8px;
+}
+
+.menu-icon-alt::after {
+  bottom: -8px;
 }
