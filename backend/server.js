@@ -794,6 +794,11 @@ const quizAttemptSchema = new mongoose.Schema(
       min: 0,
       required: true,
     },
+    totalMarks: {
+      type: Number,
+      min: 0,
+      required: true,
+    },
     attemptedAt: {
       type: Date,
       default: Date.now,
@@ -902,11 +907,11 @@ app.get("/course/:courseId/quizzes", async (req, res) => {
 
 // Save a student’s attempt
 app.post("/quizAttempt", async (req, res) => {
-  const { quiz, answers, obtainedMarks } = req.body;
+  const { quiz, answers, obtainedMarks,totalMarks } = req.body;
   const student = req.body.student;
 
   try {
-    const attempt = new QuizAttempt({ quiz, student, answers, obtainedMarks });
+    const attempt = new QuizAttempt({ quiz, student, answers, obtainedMarks ,totalMarks});
     await attempt.save();
     res.status(201).json({ success: true, attempt });
   } catch (err) {
@@ -924,9 +929,7 @@ app.get("/student/:studentId/quizAttempts", async (req, res) => {
   console.log(studentId);
 
   try {
-    const attempts = await QuizAttempt.find({ student: studentId }).select(
-      "quiz obtainedMarks"
-    );
+    const attempts = await QuizAttempt.find({ student: studentId })
     res.json(attempts);
   } catch (err) {
     console.error(err);

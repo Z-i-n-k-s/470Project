@@ -1,5 +1,4 @@
-
-/* TakeQuiz.jsx */
+// TakeQuiz.jsx
 import React, { useState, useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
 import './TakeQuiz.css';
@@ -46,6 +45,7 @@ export default function TakeQuiz() {
 
   const handleSubmit = async () => {
     // Calculate score locally
+    const totalMarks = quiz.questions.length;
     let count = 0;
     quiz.questions.forEach((q, i) => {
       if (answers[i] === q.correctIndex) count++;
@@ -59,16 +59,18 @@ export default function TakeQuiz() {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
+          // optionally include auth token if your backend requires it:
+          // 'Authorization': `Bearer ${token}`,
         },
         body: JSON.stringify({
           quiz: quizId,
           student: studentId,
           answers,
-          obtainedMarks: count
+          obtainedMarks: count,
+          totalMarks: totalMarks
         })
       });
       const result = await res.json();
-      na
       if (!res.ok) {
         console.error('Submission error:', result.message || result);
       }

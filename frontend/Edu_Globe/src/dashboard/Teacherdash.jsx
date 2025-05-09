@@ -227,6 +227,9 @@ export default function TeacherDashboard() {
             <Link to="/createassignment">New Assignment</Link>
           </li>
           <li>
+            <Link to="/assignmentfeedback">Assignment Feedback</Link>
+          </li>
+          <li>
             <Link to="/createQuiz">New Quiz</Link>
           </li>
           <li>

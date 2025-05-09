@@ -7,6 +7,7 @@ import {
   XAxis,
   YAxis,
   Tooltip,
+    Legend,
   CartesianGrid,
   ResponsiveContainer,
 } from "recharts";
@@ -95,6 +96,7 @@ function Student() {
         .then((r) => r.json())
         .then((attemptsFromServer) => {
           setAttempts(attemptsFromServer);
+          
           setAttemptedQuizIds(new Set(attemptsFromServer.map((a) => a.quiz)));
         })
         .catch(console.error);
@@ -119,11 +121,13 @@ function Student() {
     // for each attempt, find the matching quiz object
     const merged = attempts
       .map((attempt) => {
+        console.log(attempt)
         const quizObj = allQuizzes.find((q) => q._id === attempt.quiz);
         if (!quizObj) return null; // no matching quiz yet
         return {
           quizName: quizObj.quizName, // from quizzes
           obtainedMarks: attempt.obtainedMarks, // from attempts
+          totalMarks: attempt.totalMarks, // from attempts
         };
       })
       .filter((x) => x !== null);
@@ -613,32 +617,42 @@ function Student() {
         </div>
 
         {/* Fourth row: Performance Chart */}
-        {results.length > 0 && (
-          <div className="chart-row">
-            <div className="box">
-              <h2>Performance Chart</h2>
-              <div className="chart-wrapper">
-                <ResponsiveContainer width="100%" height={300}>
-                  <BarChart
-                    data={results}
-                    margin={{ top: 20, right: 30, left: 20, bottom: 30 }}
-                  >
-                    <CartesianGrid strokeDasharray="3 3" />
-                    <XAxis
-                      dataKey="quizName"
-                      angle={-45}
-                      textAnchor="end"
-                      height={70}
-                    />
-                    <YAxis />
-                    <Tooltip />
-                    <Bar dataKey="obtainedMarks" fill="#6200ea" />
-                  </BarChart>
-                </ResponsiveContainer>
-              </div>
-            </div>
-          </div>
-        )}
+       {results.length > 0 && (
+  <div className="chart-row">
+    <div className="box">
+      <h2>Performance Chart</h2>
+      <div className="chart-wrapper">
+        <ResponsiveContainer width="100%" height={300}>
+          <BarChart
+            data={results}
+            margin={{ top: 20, right: 30, left: 20, bottom: 30 }}
+          >
+            <CartesianGrid strokeDasharray="3 3" />
+            <XAxis
+              dataKey="quizName"
+              angle={-45}
+              textAnchor="end"
+              height={70}
+            />
+            <YAxis />
+            <Tooltip />
+            <Legend />            {/* ← add legend */}
+            <Bar 
+              dataKey="obtainedMarks" 
+              name="Obtained Marks" 
+              fill="#6200ea" 
+            />
+            <Bar 
+              dataKey="totalMarks" 
+              name="Total Marks" 
+              fill="#03dac6" 
+            />
+          </BarChart>
+        </ResponsiveContainer>
+      </div>
+    </div>
+  </div>
+)}
 
         {/* Enrollment Confirmation Popup */}
         {showPopup && selectedCourse && (
